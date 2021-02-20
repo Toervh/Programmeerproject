@@ -23,3 +23,5 @@ Search results are easy and logical.
 A users own page includes their notes and name, and a picture. Future update will add their own character to their homepage.
 ![userpage](/doc/Programmeerproject---Wireframe-cc-Premium-afbeeldingen/0008.jpg)
 
+An overview of the Database Structure would look something like this:
+![database](/doc/Database%20layout%20Programmeerproject.jpeg)
