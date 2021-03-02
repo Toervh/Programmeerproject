@@ -1,13 +1,13 @@
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/styles.scss') }}">
+        <link rel="stylesheet" href="{{ url_for('static',filename='styles/stylesheet.css') }}">
         <title>{% block title %} NoteWorld{% endblock %}</title>
     </head>
     <body>
         <div class="header" id="stickyHeader">
             <h2>{% block header %}{% endblock %}</h2>
         </div>
-
+        <p><h2>hello world</h2></p>
     <script>
         window.onscroll = function() {myFunction()};
 

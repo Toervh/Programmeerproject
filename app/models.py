@@ -10,8 +10,6 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     created = relationship("World")
 
-    def __repr__(self):
-        return '<User %r>' % self.username
 
 class World(db.Model):
     __tablename__ = 'Worlds'
