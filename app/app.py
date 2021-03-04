@@ -51,9 +51,11 @@ def register():
         username = request.form.get("username")
         password = request.form.get("password")
         email = request.form.get("email")
-        db.execute("INSERT INTO users(username, password, email) VALUES (:username, :password, :email)",
-                   {"username": username, "password": password, "email": email})
-        db.commit()
+        #TODO
+        #insert into database
+        # db.execute("INSERT INTO users(username, password, email) VALUES (:username, :password, :email)",
+        #            {"username": username, "password": password, "email": email})
+        # db.commit()
         #TODO
         #Implement mailing the user that the registration was succesfull.
         # message = Message("Thank you for registering!", recipients=[email])
@@ -63,19 +65,21 @@ def register():
 @app.route('/login', methods=["POST", "GET"])
 def login():
     if request.method == "GET":
+        if session.get("name"):
+            return redirect("/index.html", message="You are already logged in.")
         return render_template("login.html")
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        res = db.execute("SELECT id, password FROM users WHERE username LIKE :username",
-                         {"username": username}).fetchone()
-        user_id = res.id
-        if not res:
-            return render_template("error.html", message="Login unsuccesfull. Please try again.")
-        else:
-            session["logged_in"] = True
-            session["user_id"] = user_id
-            session["user_name"] = username
+        # res = db.execute("SELECT id, password FROM users WHERE username LIKE :username",
+        #                  {"username": username}).fetchone()
+        # user_id = res.id
+        # if not res:
+        #     return render_template("error.html", message="Login unsuccesfull. Please try again.")
+        # else:
+        session["logged_in"] = True
+        # session["user_id"] = user_id
+        session["user_name"] = username
         session["logged_in"] = True
         return render_template("index.html")
 
