@@ -1,10 +1,16 @@
 import os
 from flask import Flask, session, redirect, url_for, render_template, request
-from flask_session import Session
+#TODO
+#ask how to import flask session
+from flask.ext.session import Session
+
 from flask_sqlalchemy import SQLAlchemy
 from models import *
 
 app = Flask(__name__)
+#TODO
+#setup flask session
+
 # TODO
 # Setup for Email server.
 # app.config["MAIL_DEFAULT_SENDER"] = "toervanholstein@gmail.com"
