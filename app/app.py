@@ -2,7 +2,7 @@ import os
 from flask import Flask, session, redirect, url_for, render_template, request
 #TODO
 #ask how to import flask session
-from flask.ext.session import Session
+from flask_session import Session
 
 from flask_sqlalchemy import SQLAlchemy
 from models import *
@@ -29,8 +29,7 @@ app = Flask(__name__)
 #is this the right way to initialize SQLAlchemy?
 db = SQLAlchemy(app)
 
-#TODO
-#Find out what this does.
+
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -38,12 +37,7 @@ Session(app)
 
 @app.route("/")
 def index():
-    #TODO
-    #index.html and display there that user is not logged in.
-    if not session.get("logged_in"):
-        return redirect(url_for('login'))
-    else:
-        return render_template("index.html")
+    return render_template("index.html")
 
 
 @app.route('/register', methods=['GET', 'POST'])
