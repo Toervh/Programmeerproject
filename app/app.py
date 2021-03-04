@@ -54,8 +54,10 @@ def register():
         db.execute("INSERT INTO users(username, password, email) VALUES (:username, :password, :email)",
                    {"username": username, "password": password, "email": email})
         db.commit()
-        message = Message("Thank you for registering!", recipients=[email])
-        mail.send(message)
+        #TODO
+        #Implement mailing the user that the registration was succesfull.
+        # message = Message("Thank you for registering!", recipients=[email])
+        # mail.send(message)
         return render_template("registered.html")
 
 @app.route('/login', methods=["POST", "GET"])
@@ -67,6 +69,7 @@ def login():
         password = request.form.get("password")
         res = db.execute("SELECT id, password FROM users WHERE username LIKE :username",
                          {"username": username}).fetchone()
+        user_id = res.id
         if not res:
             return render_template("error.html", message="Login unsuccesfull. Please try again.")
         else:
