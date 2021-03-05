@@ -1,4 +1,3 @@
-import os
 from flask import Flask, session, redirect, url_for, render_template, request
 #TODO
 #ask how to import flask session
@@ -37,6 +36,8 @@ Session(app)
 
 @app.route("/")
 def index():
+    if not session.get("name"):
+        return redirect("/login")
     return render_template("index.html")
 
 
@@ -71,31 +72,18 @@ def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        # res = db.execute("SELECT id, password FROM users WHERE username LIKE :username",
-        #                  {"username": username}).fetchone()
-        # user_id = res.id
-        # if not res:
-        #     return render_template("error.html", message="Login unsuccesfull. Please try again.")
-        # else:
-        session["logged_in"] = True
-        # session["user_id"] = user_id
-        session["user_name"] = username
-        session["logged_in"] = True
-        return render_template("index.html")
+        print(username)
+        print(password)
 
-# @app.route('/world/<world_id>')
-# def world(world_id):
-#     if not session.get(logged_in):
-#         redirect(url_for('login'))
-#     else:
-#         res = db.execute("SELECT * FROM worlds WHERE id = :world_id",
-#                         {"world_id": world_id}).fetchone()
+        session["logged_in"] = True
+        session["user_name"] = username
+        return redirect("/")
 
 @app.route('/logout')
 def logout():
-    # session["logged_in"] = False
-    # session["user_id"] = None
-    return "TODO"
+    session["logged_in"] = False
+    session["user_name"] = None
+    return redirect("/")
 
 if __name__ == '__main__':
     db.create_all()
