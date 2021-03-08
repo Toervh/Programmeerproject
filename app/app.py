@@ -1,14 +1,12 @@
 from flask import Flask, session, redirect, url_for, render_template, request
-#TODO
-#ask how to import flask session
 from flask_session import Session
-
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
 from models import *
 
 app = Flask(__name__)
-#TODO
-#setup flask session
 
 # TODO
 # Setup for Email server.
@@ -20,19 +18,15 @@ app = Flask(__name__)
 # app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
 # mail = Mail(app)
 
-#TODO
-#find out what link to use to connect database and to view it.
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite////tmp/test.db'
-
-#TODO
-#is this the right way to initialize SQLAlchemy?
-db = SQLAlchemy(app)
-
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite////test.db'
+db.init_app(app)
 
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+Migrate(app, db)
 
 @app.route("/")
 def index():
@@ -46,17 +40,14 @@ def register():
     if request.method == "GET":
         return render_template("register.html")
 
-    #TODO
-    #Find out how to check input and created users.
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
         email = request.form.get("email")
-        #TODO
-        #insert into database
-        # db.execute("INSERT INTO users(username, password, email) VALUES (:username, :password, :email)",
-        #            {"username": username, "password": password, "email": email})
-        # db.commit()
+
+        db.execute("INSERT INTO users(username, password, email) VALUES (:username, :password, :email)",
+                   {"username": username, "password": password, "email": email})
+        db.commit()
         #TODO
         #Implement mailing the user that the registration was succesfull.
         # message = Message("Thank you for registering!", recipients=[email])
@@ -85,6 +76,6 @@ def logout():
     session["user_name"] = None
     return redirect("/")
 
-if __name__ == '__main__':
-    db.create_all()
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     db.create_all()
+#     app.run(debug=True)
