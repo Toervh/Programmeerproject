@@ -8,19 +8,28 @@
     </head>
     <body>
         <div class="header" id="stickyHeader">
+            <button onclick="goBack()">Go Back</button>
+
+            <div id="title">{% block header %}{% endblock header %}</div>
+            <button id="profile">
             {% if session.name %}
-                <h4><a href="/profile">{{ session.name }}</a></h4>
+                <h4><a href="{{ url_for('profile', id=user.id) }}">{{ session.name }}</a></h4>
             {% else %}
                 <h4><a href="/login">Login</a></h4>
             {% endif %}
-        <h3>{% block header %}{% endblock header %}</h3>
+                </button>
         </div>
 
     {% block body %} {% endblock body %}
 
 
 
+
     <script>
+
+        function goBack() {
+          window.history.back();
+        }
         window.onscroll = function() {myFunction()};
 
         var header = document.getElementById("myHeader");

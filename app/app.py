@@ -38,6 +38,11 @@ class User(db.Model):
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
 
+class World(db.Model):
+    __tablename__ = 'worlds'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(24), nullable=False)
+
 @app.route("/")
 def index():
     if not session.get("name"):
@@ -56,15 +61,9 @@ def register():
         email = request.form.get("email")
 
         user = User(username=username, password=password, email=email)
-
-
         db.session.add(user)
         db.session.commit()
 
-        #TODO
-        #Implement mailing the user that the registration was succesfull.
-        # message = Message("Thank you for registering!", recipients=[email])
-        # mail.send(message)
         return render_template("registered.html")
 
 @app.route('/login', methods=["POST", "GET"])
@@ -77,13 +76,12 @@ def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        user.query.filter_by(username=username).first()
-
-        print(username)
-        print(password)
-
-        session["logged_in"] = True
-        session["user_name"] = username
+        user = users.query.filter_by(username=username).first()
+        if user.password == password:
+            session["logged_in"] = True
+            session["user_name"] = username
+        else:
+            return redirect("/login", message="Incorrect username or password. Please try again.")
         return redirect("/")
 
 @app.route('/logout')
