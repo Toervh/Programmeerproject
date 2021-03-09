@@ -4,9 +4,11 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from models import *
+# from models import *
 
 app = Flask(__name__)
+
+
 
 # TODO
 # Setup for Email server.
@@ -18,7 +20,8 @@ app = Flask(__name__)
 # app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
 # mail = Mail(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite////test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+db = SQLAlchemy(app)
 db.init_app(app)
 
 # Configure session to use filesystem
@@ -27,6 +30,13 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 Migrate(app, db)
+
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
 
 @app.route("/")
 def index():
@@ -45,9 +55,12 @@ def register():
         password = request.form.get("password")
         email = request.form.get("email")
 
-        db.execute("INSERT INTO users(username, password, email) VALUES (:username, :password, :email)",
-                   {"username": username, "password": password, "email": email})
-        db.commit()
+        user = User(username=username, password=password, email=email)
+
+
+        db.session.add(user)
+        db.session.commit()
+
         #TODO
         #Implement mailing the user that the registration was succesfull.
         # message = Message("Thank you for registering!", recipients=[email])
@@ -60,9 +73,12 @@ def login():
         if session.get("name"):
             return redirect("/index.html", message="You are already logged in.")
         return render_template("login.html")
+
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
+        user.query.filter_by(username=username).first()
+
         print(username)
         print(password)
 
