@@ -7,7 +7,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 # from models import *
 
 app = Flask(__name__)
-
+asd
 
 
 # TODO
