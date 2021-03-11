@@ -1,4 +1,4 @@
-from flask import Flask, session, redirect, url_for, render_template, request
+from flask import Flask, session, redirect, url_for, render_template, request, flash
 from flask_session import Session
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -7,7 +7,6 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 # from models import *
 
 app = Flask(__name__)
-asd
 
 
 # TODO
@@ -42,6 +41,7 @@ class World(db.Model):
     __tablename__ = 'worlds'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(24), nullable=False)
+    # creator_id = Column(Integer, ForeignKey('user.id'))
 
 @app.route("/")
 def index():
@@ -76,12 +76,16 @@ def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        user = users.query.filter_by(username=username).first()
+        user = User.query.filter_by(username=username).first()
+        if not user:
+            flash('Incorrect username or password. Please try again.')
+            return redirect("/login")
         if user.password == password:
             session["logged_in"] = True
             session["user_name"] = username
         else:
-            return redirect("/login", message="Incorrect username or password. Please try again.")
+            flash('Incorrect username or password. Please try again.')
+            return redirect("/login")
         return redirect("/")
 
 @app.route('/logout')
