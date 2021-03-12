@@ -7,6 +7,10 @@
   color: #f1f1f1;
 }
 
+#title {
+  margin: auto;
+  text-align: center;
+}
 /* Page content */
 .content {
   padding: 16px;
@@ -46,9 +50,11 @@ button {
   margin: 8px 0;
   border: none;
   cursor: pointer;
-  width: 100%;
-}
 
+}
+.login {
+  width: 20%;
+}
 /* Add a hover effect for buttons */
 button:hover {
   opacity: 0.8;
@@ -83,6 +89,17 @@ span.psw {
   }
 }
 
-#register {
-  background-color: red;
+.back{
+  width: 10%;
+  position: left;
+  padding-left: 3px;
+  padding-top: 2px;
+}
+
+.profile {
+  max-width: 60px;
+  max-height:40px;
+  background-color: beige;
+  padding-right: 3px;
+  padding-top: 2px;
 }

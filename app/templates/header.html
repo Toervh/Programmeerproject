@@ -8,16 +8,16 @@
     </head>
     <body>
         <div class="header" id="stickyHeader">
-            <button onclick="goBack()">Go Back</button>
+            <button class="back" onclick="goBack()">Go Back</button>
 
             <div id="title">{% block header %}{% endblock header %}</div>
-            <button id="profile">
+            <button class="profile">
             {% if session.name %}
                 <h4><a href="{{ url_for('profile', id=user.id) }}">{{ session.name }}</a></h4>
             {% else %}
                 <h4><a href="/login">Login</a></h4>
             {% endif %}
-                </button>
+            </button>
         </div>
         {% with messages = get_flashed_messages() %}
         <div container id="message">
