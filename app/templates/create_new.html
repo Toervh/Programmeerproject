@@ -1,6 +1,19 @@
 {% extends "header.html" %}
-{% block title %}{% endblock %}
-{% block header %}{% endblock %}
+{% block title %}Create New World{% endblock %}
+{% block header %}Create New World{% endblock %}
 {% block body %}
+    <form action="createNew" id="create_new">
+        <h2>Create New World</h2>
+        <input type="text" id="name" placeholder="World Name" autocomplete="off" name="world_name">
+        <input type="text" id="description" placeholder="Description" autocomplete="off" name="description">
 
+
+
+    </form>
+
+<script>
+    def createNew {
+        #TODO
+    }
+</script>
 {% endblock body %}
