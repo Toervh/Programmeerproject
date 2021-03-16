@@ -41,7 +41,8 @@ class World(db.Model):
     __tablename__ = 'worlds'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(24), nullable=False)
-    # creator_id = Column(Integer, ForeignKey('user.id'))
+    description = db.Column(db.text(500))
+    creator_id = db.Column(Integer)
 
 @app.route("/")
 def index():
@@ -87,6 +88,20 @@ def login():
             flash('Incorrect username or password. Please try again.')
             return redirect("/login")
         return redirect("/")
+
+@app.route('/create_new', methods=["POST", "GET"])
+def create_new():
+    if request.method == "GET":
+        return render_template("create_new.html")
+
+    if request.method == "POST":
+        world_name = request.form.get("name")
+        world_description = request.form.get("description")
+        if len world_description > 500:
+            flash('Max amount of words exceeded.')
+            return redirect('/create_new')
+        else:
+            world = World(name=world_name, description=world_description, creator_id=session["user_name"])
 
 @app.route('/logout')
 def logout():
