@@ -9,15 +9,6 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 app = Flask(__name__)
 
 
-# TODO
-# Setup for Email server.
-# app.config["MAIL_DEFAULT_SENDER"] = "toervanholstein@gmail.com"
-# app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
-# app.config["MAIL_PORT"] = 587
-# app.config["MAIL_SERVER"] = smtp.gmail.com
-# app.config["MAIL_USE_TLS"] = True
-# app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
-# mail = Mail(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
@@ -42,7 +33,7 @@ class World(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(24), nullable=False)
     description = db.Column(db.text(500))
-    creator_id = db.Column(Integer)
+    creator_name = db.Column(Integer)
 
 @app.route("/")
 def index():
@@ -97,11 +88,19 @@ def create_new():
     if request.method == "POST":
         world_name = request.form.get("name")
         world_description = request.form.get("description")
-        if len world_description > 500:
+        if len(world_description) > 500:
             flash('Max amount of words exceeded.')
             return redirect('/create_new')
         else:
-            world = World(name=world_name, description=world_description, creator_id=session["user_name"])
+            world = World(name=world_name, description=world_description, creator_name=session["user_name"])
+
+@app.route('/worlds')
+def worlds():
+    list_worlds = []
+    for worlds in World:
+        if worlds.creator_name == session["user_name"]:
+            list_worlds.append(world)
+    return render_template('worlds', worlds=list_worlds)
 
 @app.route('/logout')
 def logout():
