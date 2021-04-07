@@ -9,7 +9,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 app = Flask(__name__)
 
 
-
+app.config['UPLOAD_FOLDER'] = '/doc/uploads/'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
 db.init_app(app)
@@ -32,14 +32,25 @@ class World(db.Model):
     __tablename__ = 'worlds'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(24), nullable=False)
-    description = db.Column(db.text(500))
-    creator_name = db.Column(Integer)
+    description = db.Column(db.String(500))
+    creator_name = db.Column(db.String(80))
+
+class Notes(db.Model):
+    __tablename__ = 'notes'
+    id = db.Column(db.Integer, primary_key=True)
+    world_id = db.Column(db.Integer)
+    text = db.Column(db.String(500))
+
 
 @app.route("/")
 def index():
-    if not session.get("name"):
+    if not session.get("user_name"):
         return redirect("/login")
-    return render_template("index.html")
+
+    worlds = World.query.filter_by(creator_name=session["user_name"]).all()
+    if not worlds:
+        return render_template("index.html")
+    return render_template("index.html", worlds=worlds)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -54,9 +65,16 @@ def register():
 
         user = User(username=username, password=password, email=email)
         db.session.add(user)
-        db.session.commit()
+
+        try:
+            db.session.commit()
+        except:
+            flash('Username already in use.')
+            return redirect('/register')
 
         return render_template("registered.html")
+
+
 
 @app.route('/login', methods=["POST", "GET"])
 def login():
@@ -69,12 +87,14 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
         user = User.query.filter_by(username=username).first()
+
         if not user:
             flash('Incorrect username or password. Please try again.')
             return redirect("/login")
         if user.password == password:
             session["logged_in"] = True
             session["user_name"] = username
+
         else:
             flash('Incorrect username or password. Please try again.')
             return redirect("/login")
@@ -88,19 +108,32 @@ def create_new():
     if request.method == "POST":
         world_name = request.form.get("name")
         world_description = request.form.get("description")
+
+        ##TODO file upload
+        # file = request.files['file']
+        # file = secure_filename(file.filename)
+        # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
         if len(world_description) > 500:
             flash('Max amount of words exceeded.')
             return redirect('/create_new')
         else:
             world = World(name=world_name, description=world_description, creator_name=session["user_name"])
 
-@app.route('/worlds')
-def worlds():
-    list_worlds = []
-    for worlds in World:
-        if worlds.creator_name == session["user_name"]:
-            list_worlds.append(world)
-    return render_template('worlds', worlds=list_worlds)
+@app.route('/world/<world_id>')
+def world(world_id):
+    world = World.query.filter_by(id=world_id).first()
+    notes = Notes.query.filter_by(world_id=world_id).all()
+
+    return render_template('world', world=world, notes=notes)
+
+@app.route('/add_note')
+def add_note():
+    note = Note(world_id=request.form.get("world_id"), text=request.form.get("note_text"))
+
+    if 'url' in session:
+        return redirect(session['url'])
+    return redirect("/")
 
 @app.route('/logout')
 def logout():
