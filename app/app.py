@@ -2,9 +2,10 @@ from flask import Flask, session, redirect, url_for, render_template, request, f
 from flask_session import Session
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-# from models import *
+
 
 app = Flask(__name__)
 
@@ -40,16 +41,41 @@ class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     world_id = db.Column(db.Integer)
     text = db.Column(db.String(500))
+    creation_date = db.Column(db.DateTime, default=db.func.current_timestamp())
 
+class Locations(db.Model):
+    __tablename__ = 'locations'
+    id = db.Column(db.Integer, primary_key=True)
+    world_id = db.Column(db.Integer)
+    description = db.Column(db.String(500))
+    # creation_date = db.Column
+
+class Characters(db.Model):
+    __tablename__ = 'characters'
+    id = db.Column(db.Integer, primary_key=True)
+    world_id = db.Column(db.Integer)
+    description = db.Column(db.String(500))
+    # creation_date = db.Column()
+    str = db.Column(db.Integer)
+    con = db.Column(db.Integer)
+    dex = db.Column(db.Integer)
+    int = db.Column(db.Integer)
+    wis = db.Column(db.Integer)
+    cha = db.Column(db.Integer)
+    player_id = db.Column(db.Integer, nullable=True)
 
 @app.route("/")
 def index():
     if not session.get("user_name"):
         return redirect("/login")
 
-    worlds = World.query.filter_by(creator_name=session["user_name"]).all()
+    username = session.get("user_name")
+    print(username)
+    worlds = World.query.all()
+    # worlds = World.query.filter_by(creator_name=username).all()
     if not worlds:
         return render_template("index.html")
+
     return render_template("index.html", worlds=worlds)
 
 
@@ -103,9 +129,13 @@ def login():
 @app.route('/create_new', methods=["POST", "GET"])
 def create_new():
     if request.method == "GET":
+        if not session.get("user_name"):
+            return redirect("/login")
         return render_template("create_new.html")
 
     if request.method == "POST":
+        if not session.get("user_name"):
+            return redirect("/login")
         world_name = request.form.get("name")
         world_description = request.form.get("description")
 
@@ -119,16 +149,23 @@ def create_new():
             return redirect('/create_new')
         else:
             world = World(name=world_name, description=world_description, creator_name=session["user_name"])
+            world_id = world.id
+
+        return redirect("/")
 
 @app.route('/world/<world_id>')
 def world(world_id):
+    if not session.get("user_name"):
+        return redirect("/login")
+
     world = World.query.filter_by(id=world_id).first()
     notes = Notes.query.filter_by(world_id=world_id).all()
 
-    return render_template('world', world=world, notes=notes)
+    return render_template("world", world=world, notes=notes)
 
 @app.route('/add_note')
 def add_note():
+
     note = Note(world_id=request.form.get("world_id"), text=request.form.get("note_text"))
 
     if 'url' in session:

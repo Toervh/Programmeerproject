@@ -8,7 +8,7 @@ Homepage
     <div class="container-md" id="worlds">
         {% for world in worlds %}
             <div class="container-fluid" id="world">
-                <a href="{{ url_for('world', world_id=world.id }}"><h3>{{ world.title }}</h3></a>
+                <a href="{{ url_for('world', world_id=world.id) }}"><h3>{{ world.title }}</h3></a>
                 <h4>{{ world.description }}</h4>
             </div>
         {% endfor %}

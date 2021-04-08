@@ -2,15 +2,15 @@
 {% block title %} Log In {% endblock %}
 {% block header %}Log In{% endblock %}
 {% block body %}
-
-    <form method="post">
-      <h2>Login Form</h2>
+<div class="text-center">
+    <form method="post" class="form-signin">
+      <h2 class="h3 mb-3 font-weight-normal">Login</h2>
       <div class="container">
         <label for="username"><b>Username</b></label>
-        <input autocomplete="off" autofocus type="text" placeholder="Enter Username" name="username" required>
+        <input autocomplete="off" autofocus type="text" placeholder="Enter Username" name="username" class="form-control" id="inputEmail" required>
 
         <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password" required>
+        <input type="password" placeholder="Enter Password" name="password" class="form-control" id="inputPassword" required>
 
         <button class="login" type="submit">Login</button>
       </div>
@@ -18,5 +18,5 @@
             <h4>Not a member yet? <a href="{{url_for('register')}}">Register here!</a></h4>
         </div>
     </form>
-
+</div>
 {% endblock body %}

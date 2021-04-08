@@ -4,20 +4,22 @@
         <meta charset="utf-8"
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/stylesheet.css') }}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <title>{% block title %}{% endblock title %} - NoteWorld</title>
     </head>
     <body>
-        <div class="header" id="stickyHeader">
-            <button class="back" onclick="goBack()">Go Back</button>
-
-            <div id="title">{% block header %}{% endblock header %}</div>
-            <button class="profile">
-            {% if session.name %}
-                <h4><a href="{{ url_for('profile', id=user.id) }}">{{ session.name }}</a></h4>
-            {% else %}
-                <h4><a href="/login">Login</a></h4>
-            {% endif %}
-            </button>
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom" id="stickyHeader">
+            <div class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+                <button class="btn btn-primary" onclick="goBack()">Go Back</button>
+            </div>
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0" id="title">{% block header %}{% endblock header %}</ul>
+            <div class="col-md-3 text-end">
+                {% if session.name %}
+                    <h4><a href="{{ url_for('profile', id=user.id) }}">{{ session.name }}</a></h4>
+                {% else %}
+                    <a href="/login" class="btn btn-primary">Login</a>
+                {% endif %}
+            </div>
         </div>
         {% with messages = get_flashed_messages() %}
         <div container id="message">
@@ -30,7 +32,8 @@
               {% endif %}
             </div>
         {% endwith %}
-    {% block body %} {% endblock body %}
+
+        {% block body %} {% endblock body %}
 
 
 
