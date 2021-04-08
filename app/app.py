@@ -70,12 +70,12 @@ def index():
         return redirect("/login")
 
     username = session.get("user_name")
-    print(username)
-    worlds = World.query.all()
-    # worlds = World.query.filter_by(creator_name=username).all()
-    if not worlds:
-        return render_template("index.html")
 
+    worlds = World.query.filter_by(creator_name=username).all()
+    # if not worlds:
+    #     return render_template("index.html")
+    for world in worlds:
+        print(world)
     return render_template("index.html", worlds=worlds)
 
 
@@ -136,7 +136,8 @@ def create_new():
     if request.method == "POST":
         if not session.get("user_name"):
             return redirect("/login")
-        world_name = request.form.get("name")
+
+        world_name = request.form.get("world_name")
         world_description = request.form.get("description")
 
         ##TODO file upload
@@ -150,7 +151,13 @@ def create_new():
         else:
             world = World(name=world_name, description=world_description, creator_name=session["user_name"])
             world_id = world.id
-
+            flash("world created")
+            print(world.name)
+            print(world.description)
+            print(world.creator_name)
+            print("redirecting...")
+            db.session.add(world)
+            db.session.commit()
         return redirect("/")
 
 @app.route('/world/<world_id>')
@@ -161,7 +168,7 @@ def world(world_id):
     world = World.query.filter_by(id=world_id).first()
     notes = Notes.query.filter_by(world_id=world_id).all()
 
-    return render_template("world", world=world, notes=notes)
+    return render_template("/world.html", world=world, notes=notes)
 
 @app.route('/add_note')
 def add_note():

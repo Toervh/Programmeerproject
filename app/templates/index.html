@@ -4,18 +4,23 @@
 Homepage
 {% endblock %}
 {% block body %}
-{% if worlds %}
-    <div class="container-md" id="worlds">
-        {% for world in worlds %}
-            <div class="container-fluid" id="world">
-                <a href="{{ url_for('world', world_id=world.id) }}"><h3>{{ world.title }}</h3></a>
-                <h4>{{ world.description }}</h4>
-            </div>
-        {% endfor %}
+<main role="main" class="container">
+    <div class="row" id="worlds">
+        {% if worlds %}
+            {% for world in worlds %}
+                <div class="container-fluid" id="world">
+                    <a href="{{ url_for('world', world_id=world.id) }}"><h3>{{ world.name }}</h3></a>
+                    <h4>{{ world.description }}</h4>
+                </div>
+            {% endfor %}
+        {% else %}
+        <div class="container-fluid">
+            <p>Wow such empty</p>
+        </div>
+        {% endif %}
         <div class="container-md" id="create_new_world">
-            <button value="create_new_world" action="/create_new" method="get">Create new world</button>
+            <a href="{{ url_for('create_new') }}"><h4>Create New World</h4></a>
         </div>
     </div>
-{% endif %}
-
+</main>
 {% endblock %}
