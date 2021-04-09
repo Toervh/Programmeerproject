@@ -1,0 +1,41 @@
+{% extends "header.html" %}
+{% block title %}{{ location.name }} Overview{% endblock %}
+{% block header %}{{ location.name }} Overview{% endblock %}
+{% block body %}
+<main role="main" class="container">
+    <div class="container" id="overview">
+        <div class="row mb-2">
+            <div class="header" width="fluid">{{ location.name }}</div>
+        </div>
+        <div class="row md-2">
+            <div class="container-md">description of the location. + picture</div>
+        </div>
+        <div class="row">
+            <div class="col md-8 blog-main">
+                {% if notes %}
+                    {% for note in notes %}
+                        <div class="blog-post">
+                            <h3 class="blog-post-title">note title?</h3>
+                            <p class="blog-post-meta">time of creation goes here.</p>
+                            <hr>
+                            <p class="blog-post-text">text goes here.</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="col md-8 blog-main">
+                <div class="container" id="new_note">
+<!--                    form doesnt do anything yet. -->
+                    <form>
+                          <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Create Note</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                              <button type="submit">Create Note</button>
+                          </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
