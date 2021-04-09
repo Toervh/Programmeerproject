@@ -248,17 +248,16 @@ def create_note():
 
     note_text = request.json
     note = Notes(world_id=request.form.get("world_id"), text=request.form.get("note_text"))
-    # if not note:
-    #     return json.dumps(False)
-    #
-    # else:
-    #
-    db.session.add(note)
-    db.session.commit()
+    if not note:
+        return json.dumps(False)
 
-    data = request.json
+    else:
 
-    return jsonify(data)
+        db.session.add(note)
+        db.session.commit()
+
+
+    return jsonify(note_text)
 
 @app.route('/logout')
 def logout():
