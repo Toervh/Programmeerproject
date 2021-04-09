@@ -1,4 +1,4 @@
-from flask import Flask, session, redirect, url_for, render_template, request, flash
+from flask import Flask, session, redirect, url_for, render_template, request, flash, jsonify
 from flask_session import Session
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -42,6 +42,8 @@ class Notes(db.Model):
     world_id = db.Column(db.Integer)
     text = db.Column(db.String(500))
     creation_date = db.Column(db.DateTime, default=db.func.current_timestamp())
+    location_id = db.Column(db.Integer)
+    character_id = db.Column(db.Integer)
 
 class Locations(db.Model):
     __tablename__ = 'locations'
@@ -54,6 +56,7 @@ class Locations(db.Model):
 class Characters(db.Model):
     __tablename__ = 'characters'
     id = db.Column(db.Integer, primary_key=True)
+    character_name = db.Column(db.String(80))
     world_id = db.Column(db.Integer)
     description = db.Column(db.String(500))
     # creation_date = db.Column()
@@ -161,8 +164,8 @@ def new_world():
         return redirect("/")
 
 
-@app.route('/new_character', methods=["POST", "GET"])
-def new_character():
+@app.route('/new_character/<world_id>', methods=["POST", "GET"])
+def new_character(world_id):
     if request.method == "GET":
         if not session.get("user_name"):
             return redirect("/login")
@@ -171,6 +174,12 @@ def new_character():
     if request.method == "POST":
         if not session.get("user_name"):
             return redirect("/login")
+
+        character = Characters(character_name=request.form.get("character_name"), world_id=world_id, description=request.form.get("description"),
+                               str=request.form.get("str"), con=request.form.get("con"), dex=request.form.get("dex"),
+                               int=request.form.get("int"), wis=request.form.get("wis"), cha=request.form.get("cha"))
+        db.session.add(character)
+        db.session.commit()
 
         return redirect('/')
 
@@ -186,27 +195,16 @@ def new_location(world_id):
         if not session.get("user_name"):
             return redirect("/login")
 
+        location = Locations(location_name=request.form.get("location_name"), world_id=world_id, description=request.form.get("description"))
+        db.session.add(location)
+        db.session.commit()
+
         return redirect('/')
-#         location_name = request.form.get("location_name")
-#         description = request.form.get("description")
-#
-#         ##TODO let this route know what world it belongs to
-#         # world = World.query.filter_by(id=l)
+
 #         ##TODO file upload
 #         # file = request.files['file']
 #         # file = secure_filename(file.filename)
 #         # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-#
-#         if len(description) > 500:
-#             flash('Max amount of words exceeded.')
-#             return redirect('/new_location')
-#         else:
-#             location = Locations(world_id=world.id, location_name=location_name, description=world_description)
-#             world_id = world.id
-#             flash("world created")
-#             db.session.add(world)
-#             db.session.commit()
-#         return redirect("/")
 
 
 
@@ -216,29 +214,51 @@ def world(world_id):
         return redirect("/login")
 
     world = World.query.filter_by(id=world_id).first()
-    notes = Notes.query.filter_by(world_id=world_id).all()
+    locations = Locations.query.filter_by(world_id=world_id).all()
+    characters = Characters.query.filter_by(world_id=world_id).all()
 
-    return render_template("/world.html", world=world, notes=notes)
+    return render_template("/world.html", world=world, locations=locations, characters=characters)
 
 @app.route('/location/<location_id>')
 def location(location_id):
     if not session.get("user_name"):
         return redirect("/login")
 
-    location = Location.query.filter_by(id=location_id).first()
+    location = Locations.query.filter_by(id=location_id).first()
     notes = Notes.query.filter_by(location_id=location_id).all()
+    world = World.query.filter_by(id=location.world_id)
 
-    return render_template("location.html", location=location, notes=notes)
+    return render_template("location.html", location=location, notes=notes, world=world)
 
-@app.route('/add_note')
-def add_note():
 
-    note = Note(world_id=request.form.get("world_id"), text=request.form.get("note_text"))
-    session.db.add(note)
-    session.db.commit()
-    if 'url' in session:
-        return redirect(session['url'])
-    return redirect("/")
+@app.route('/character/<character_id>')
+def character(character_id):
+    if not session.get("user_name"):
+        return redirect("/login")
+
+    character = Characters.query.filter_by(id=character_id).first()
+    notes = Notes.query.filter_by(character_id=character_id).all()
+    world = World.query.filter_by(id=character.world_id)
+
+    return render_template("character.html", character=character, notes=notes, world=world)
+
+
+@app.route('/create_note', methods=["POST"])
+def create_note():
+
+    note_text = request.json
+    note = Notes(world_id=request.form.get("world_id"), text=request.form.get("note_text"))
+    # if not note:
+    #     return json.dumps(False)
+    #
+    # else:
+    #
+    db.session.add(note)
+    db.session.commit()
+
+    data = request.json
+
+    return jsonify(data)
 
 @app.route('/logout')
 def logout():

@@ -10,12 +10,13 @@
         <div class="row md-2">
             <div class="container-md">description of the location. + picture</div>
         </div>
-        <div class="row" id="locations/characters">
+        <div class="col" id="locations/characters">
             <div class="col md-8 blog-main" id="location_list">
+                <h4>Locations</h4>
                 {% if locations %}
                     {% for location in locations %}
                         <div class="blog-post" id="location">
-                            <a href="{{ url_for('location', location_id=location.id) }}"<h3 class="blog-post-title">{{ location.name }}</h3></a>
+                            <a href="{{ url_for('location', location_id=location.id) }}"<h3 class="blog-post-title">{{ location.location_name }}</h3></a>
                             <hr>
                             <p class="blog-post-text">Location description</p>
                         </div>
@@ -23,20 +24,21 @@
                 {% endif %}
             </div>
             <div class="col md-8 blog-main">
-                <a href="{{ url_for('new_location') }}"><h4>Create new Location</h4></a>
+                <a href="{{ url_for('new_location', world_id=world.id) }}"><h4>Create new Location</h4></a>
             </div>
             <div class="col md-8 blog-main" id="character_list">
+                <h4>Characters</h4>
                 {% if characters %}
                     {% for character in characters %}
                         <div class="blog-post" id="character">
-                            <a href="{{ url_for('character', character_id=character.id) }}"<h3 class="blog-post-title">{{ character.name }}</h3></a>
+                            <a href="{{ url_for('character', character_id=character.id) }}"<h3 class="blog-post-title">{{ character.character_name }}</h3></a>
                             <hr>
                             <p class="blog-post-text">Character description</p>
                         </div>
                     {% endfor %}
                 {% endif %}
                 <div class="col md-8 blog-main">
-                <a href="{{ url_for('new_character') }}"><h4>Create new Character</h4></a>
+                <a href="{{ url_for('new_character', world_id=world.id) }}"><h4>Create new Character</h4></a>
                 </div>
             </div>
         </div>
