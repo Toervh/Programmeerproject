@@ -175,8 +175,8 @@ def new_character():
         return redirect('/')
 
 
-@app.route('/new_location', methods=["POST", "GET"])
-def new_location():
+@app.route('/new_location/<world_id>', methods=["POST", "GET"])
+def new_location(world_id):
     if request.method == "GET":
         if not session.get("user_name"):
             return redirect("/login")
@@ -234,7 +234,8 @@ def location(location_id):
 def add_note():
 
     note = Note(world_id=request.form.get("world_id"), text=request.form.get("note_text"))
-
+    session.db.add(note)
+    session.db.commit()
     if 'url' in session:
         return redirect(session['url'])
     return redirect("/")
