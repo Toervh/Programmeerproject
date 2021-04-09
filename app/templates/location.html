@@ -26,13 +26,13 @@
             </div>
             <div class="col md-8 blog-main">
                 <div class="container" id="new_note">
-
                     <form id="new_note" onsubmit="createNote(event)">
                           <div class="form-group">
                             <label for="note_text">Create Note</label>
                             <textarea name="note_text" class="form-control" id="note_text" rows="3" placeholder="description"></textarea>
                             <input type="hidden" id="world_id" value="{{ world.id }}">
                             <input type="hidden" id="note_type" value="location">
+                            <input type="hidden" id="location_id" value="{{ location.id }}">
                             <input type="submit">Create Note</input>
                           </div>
                     </form>
@@ -61,7 +61,8 @@
     };
     xmlhttp.open("POST", "/create_note", true);
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xmlhttp.send(JSON.stringify(document.getElementById("note_text").value, document.getElementById("note_type").innerHTML = xmlhttp.ResponseText));
+    xmlhttp.send(JSON.stringify([document.getElementById("note_text").value, document.getElementById("note_type").value,
+        document.getElementById("world_id").value, document.getElementById("location_id").value]));
    }
 </script>
 {% endblock %}

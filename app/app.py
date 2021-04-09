@@ -181,7 +181,7 @@ def new_character(world_id):
         db.session.add(character)
         db.session.commit()
 
-        return redirect('/')
+        return redirect('/world', world_id=world_id)
 
 
 @app.route('/new_location/<world_id>', methods=["POST", "GET"])
@@ -226,7 +226,8 @@ def location(location_id):
 
     location = Locations.query.filter_by(id=location_id).first()
     notes = Notes.query.filter_by(location_id=location_id).all()
-    world = World.query.filter_by(id=location.world_id)
+    world = World.query.filter_by(id=location.world_id).first()
+
 
     return render_template("location.html", location=location, notes=notes, world=world)
 
@@ -247,7 +248,15 @@ def character(character_id):
 def create_note():
 
     note_text = request.json
-    note = Notes(world_id=request.form.get("world_id"), text=request.form.get("note_text"))
+    print(note_text)
+    print(note_text[0])
+    print(note_text[1])
+    print(note_text[2])
+    if note_text[1] == 'location':
+        note = Notes(world_id=note_text[2], text=note_text[0], location_id=note_text[3])
+    if note_text[1] == 'character':
+        note = Notes(world_id=note_text[2], text=note_text[0], character_id=note_text[3])
+
     if not note:
         return json.dumps(False)
 
@@ -255,7 +264,6 @@ def create_note():
 
         db.session.add(note)
         db.session.commit()
-
 
     return jsonify(note_text)
 

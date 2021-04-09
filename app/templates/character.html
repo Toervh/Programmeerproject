@@ -36,6 +36,7 @@
                             <textarea name="note_text" class="form-control" id="note_text" rows="3"></textarea>
                               <input type="hidden" id="world_id" value="{{ world.id }}">
                               <input type="hidden" id="note_type" value="character">
+                              <input type="hidden" id="character_id" value="{{ character.id }}">
                               <button type="submit">Create Note</button>
                           </div>
                     </form>
@@ -63,7 +64,8 @@
     };
     xmlhttp.open("POST", "/create_note", true);
     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xmlhttp.send(JSON.stringify(document.getElementById("note_text").value));
+    xmlhttp.send(JSON.stringify([document.getElementById("note_text").value, document.getElementById("note_type").value,
+        document.getElementById("world_id").value, document.getElementById("character_id").value]));
    }
 </script>
 {% endblock %}
