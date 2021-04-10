@@ -52,7 +52,6 @@
 
         if (this.readyState == 4 && this.status == 200) {
                 console.log(this);
-<!--            form veld leegmaken, niet herladen, maar wel die nieuwe note weergeven , niet alleen id notes overshrijven maar nieuwe erbij plakken. -->
                 document.getElementById("note_text").value = ""
                 const returned_note = document.createElement("p")
                     returned_note.innerText = this.responseText
