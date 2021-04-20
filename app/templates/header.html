@@ -14,7 +14,8 @@
             </div>
             <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0" id="title">{% block header %}{% endblock header %}</ul>
             <div class="col-md-3 text-end">
-                {% if session.name %}
+                <h2>{{ session['username'] }}</h2>
+                {% if session['username'] %}
                     <h4><a href="{{ url_for('profile', id=user.id) }}">{{ user.name }}</a></h4>
                 {% else %}
                     <a href="/login" class="btn btn-primary">Login</a>

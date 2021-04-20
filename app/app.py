@@ -124,10 +124,12 @@ def login():
         if user.password == password:
             session["logged_in"] = True
             session["user_name"] = username
+
             db.session.commit()
         else:
             flash('Incorrect username or password. Please try again.')
             return redirect("/login")
+
         return redirect("/")
 
 
@@ -138,6 +140,7 @@ def new_world():
     if request.method == "GET":
         if not session.get("user_name"):
             return redirect("/login")
+
         return render_template("new_world.html")
 
     if request.method == "POST":
@@ -181,7 +184,7 @@ def new_character(world_id):
         db.session.add(character)
         db.session.commit()
 
-        return redirect('/world', world_id=world_id)
+        return redirect('/')
 
 
 @app.route('/new_location/<world_id>', methods=["POST", "GET"])

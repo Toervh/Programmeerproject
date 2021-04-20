@@ -3,38 +3,70 @@
 {% block header %}{{ world.name }} Overview{% endblock %}
 {% block body %}
 <main role="main" class="container">
-    <div class="container" id="overview">
+    <div class="jumbotron text-center" id="overview">
         <div class="row mb-2">
             <div class="header" width="fluid">{{ world.name }}</div>
         </div>
         <div class="row md-2">
             <div class="container-md">description of the location. + picture</div>
         </div>
-        <div class="col" id="locations/characters">
-            <div class="col md-8 blog-main" id="location_list">
-                <h4>Locations</h4>
+    </div>
+    <div class="album py-5 bg-light" id="locations/characters">
+        <div class="container" id="location_list">
+            <div class="row">
+                <div class="container">
+                    <h4>Locations</h4>
+                </div>
+                <div class="col-md-4" id="location">
+                    <div class="card mb-4 box-shadow">
+                        <img class="card-img-top" style="height: 225px; width: 100%; display: block;">
+                        <a href="{{ url_for('new_location', world_id=world.id) }}"<h3 class="blog-post-title">Create new location</h3></a>
+                        <div class="card-body">
+                            <p class="card-text">Create new location</p>
+                        </div>
+                    </div>
+                </div>
                 {% if locations %}
                     {% for location in locations %}
-                        <div class="blog-post" id="location">
-                            <a href="{{ url_for('location', location_id=location.id) }}"<h3 class="blog-post-title">{{ location.location_name }}</h3></a>
-                            <hr>
-                            <p class="blog-post-text">Location description</p>
+                        <div class="col-md-4" id="location">
+                            <div class="card mb-4 box-shadow">
+                                <img class="card-img-top" style="height: 225px; width: 100%; display: block;">
+                                <a href="{{ url_for('location', location_id=location.id) }}"<h3 class="blog-post-title">{{ location.location_name }}</h3></a>
+                                <div class="card-body">
+                                    <p class="card-text">{{ location.description }}</p>
+                                </div>
+                            </div>
                         </div>
                     {% endfor %}
                 {% endif %}
             </div>
-            <div class="col md-8 blog-main">
-                <a href="{{ url_for('new_location', world_id=world.id) }}"><h4>Create new Location</h4></a>
-            </div>
-            <div class="col md-8 blog-main" id="character_list">
-                <h4>Characters</h4>
+        </div>
+        <div class="container" id="character_list">
+            <div class="row">
+                <div class="container">
+                    <h4>Characters</h4>
+                </div>
+                <div class="col-md-4" id="location">
+                    <div class="card mb-4 box-shadow">
+                        <img class="card-img-top" style="height: 225px; width: 100%; display: block;">
+                        <a href="{{ url_for('new_character', world_id=world.id) }}"<h3 class="blog-post-title">Create new character</h3></a>
+                        <div class="card-body">
+                            <p class="card-text">Create new character</p>
+                        </div>
+                    </div>
+                </div>
                 {% if characters %}
                     {% for character in characters %}
-                        <div class="blog-post" id="character">
-                            <a href="{{ url_for('character', character_id=character.id) }}"<h3 class="blog-post-title">{{ character.character_name }}</h3></a>
-                            <hr>
-                            <p class="blog-post-text">Character description</p>
-                        </div>
+                            <div class="col-md-4" id="character">
+                                <div class="card mb-4 box-shadow">
+                                    <img class="card-img-top" style="height: 225px; width: 100%; display: block;">
+                                    <a href="{{ url_for('character', character_id=character.id) }}"<h3 class="blog-post-title">{{ character.character_name }}</h3></a>
+
+                                    <div class="card-body">
+                                        <p class="card-text">{{ character.description }}</p>
+                                    </div>
+                                </div>
+                            </div>
                     {% endfor %}
                 {% endif %}
                 <div class="col md-8 blog-main">
