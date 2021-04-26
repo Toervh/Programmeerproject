@@ -16,7 +16,7 @@
                     {% for note in notes %}
                         <div class="blog-post">
                             <h3 class="blog-post-title">note title?</h3>
-                            <p class="blog-post-meta">time of creation goes here.</p>
+                            <p class="blog-post-meta">{{ note.creation_date }}</p>
                             <hr>
                             <p class="blog-post-text">{{ note.text }}</p>
                         </div>

@@ -29,6 +29,7 @@ class User(db.Model):
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
 
+
 class World(db.Model):
     __tablename__ = 'worlds'
     id = db.Column(db.Integer, primary_key=True)
@@ -40,6 +41,7 @@ class Notes(db.Model):
     __tablename__ = 'notes'
     id = db.Column(db.Integer, primary_key=True)
     world_id = db.Column(db.Integer)
+    creator_id = db.Column(db.Integer)
     text = db.Column(db.String(500))
     creation_date = db.Column(db.DateTime, default=db.func.current_timestamp())
     location_id = db.Column(db.Integer)
@@ -50,22 +52,25 @@ class Locations(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     location_name = db.Column(db.String(100))
     world_id = db.Column(db.Integer)
+    creator_id = db.Column(db.Integer)
     description = db.Column(db.String(500))
-    # creation_date = db.Column
+    creation_date = db.Column(db.DateTime, default=db.func.current_timestamp())
 
 class Characters(db.Model):
     __tablename__ = 'characters'
     id = db.Column(db.Integer, primary_key=True)
     character_name = db.Column(db.String(80))
     world_id = db.Column(db.Integer)
+    creator_id = db.Column(db.Integer)
     description = db.Column(db.String(500))
-    # creation_date = db.Column()
+    creation_date = db.Column(db.DateTime, default=db.func.current_timestamp())
     str = db.Column(db.Integer)
     con = db.Column(db.Integer)
     dex = db.Column(db.Integer)
     int = db.Column(db.Integer)
     wis = db.Column(db.Integer)
     cha = db.Column(db.Integer)
+    player_character = db.Column(db.Boolean)
     player_id = db.Column(db.Integer, nullable=True)
 
 @app.route("/")
@@ -124,7 +129,7 @@ def login():
         if user.password == password:
             session["logged_in"] = True
             session["user_name"] = username
-
+            session["id"] = user.id
             db.session.commit()
         else:
             flash('Incorrect username or password. Please try again.')
@@ -177,6 +182,15 @@ def new_character(world_id):
     if request.method == "POST":
         if not session.get("user_name"):
             return redirect("/login")
+
+        if request.form.get("PC") == True:
+            user_id = session["id"]
+            character = Characters(character_name=request.form.get("character_name"), world_id=world_id,
+                                   description=request.form.get("description"),
+                                   str=request.form.get("str"), con=request.form.get("con"),
+                                   dex=request.form.get("dex"),
+                                   int=request.form.get("int"), wis=request.form.get("wis"),
+                                   cha=request.form.get("cha"), player_character=True, creator_id=user_id)
 
         character = Characters(character_name=request.form.get("character_name"), world_id=world_id, description=request.form.get("description"),
                                str=request.form.get("str"), con=request.form.get("con"), dex=request.form.get("dex"),
@@ -255,10 +269,14 @@ def create_note():
     print(note_text[0])
     print(note_text[1])
     print(note_text[2])
+    print(note_text[3])
+    user_id = session["id"]
+
     if note_text[1] == 'location':
-        note = Notes(world_id=note_text[2], text=note_text[0], location_id=note_text[3])
+        note = Notes(world_id=note_text[2], creator_id=user_id, text=note_text[0], location_id=note_text[3])
+
     if note_text[1] == 'character':
-        note = Notes(world_id=note_text[2], text=note_text[0], character_id=note_text[3])
+        note = Notes(world_id=note_text[2], creator_id=user_id, text=note_text[0], character_id=note_text[3])
 
     if not note:
         return json.dumps(False)
