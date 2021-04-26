@@ -2,6 +2,17 @@
 
 ##Application
 
+Features:
+* Register
+* Login
+* Create World
+* Invite Users
+* Create Locations
+* Create Characters
+* Create Notes
+* Create Avatar
+* View recent Notes
+
 ###Homepage
 Users are greeted at a homepage where they can direct to their worlds or their userpage.
 ![homepage](/doc/Programmeerproject---Wireframe-cc-Premium-afbeeldingen/0001.jpg)

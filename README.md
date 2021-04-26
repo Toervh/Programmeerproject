@@ -19,3 +19,7 @@ A user can create a profile and can:
 Doing so this project is in line with other note taking apps like Evernote or more specifically Digital DM. 
 This app will give the users a more simplified way of keeping tabs on their notes, whereas other apps try to do too much.
 
+When a user has created a World they can create instances (Locations or Characters) to "fill" that world.
+Users that have joined that world can view those intances and create notes which are visible for all users joining that world.
+
+Users can also create a character belonging to themselves. This will be their Player Character and will act as their Avatar in that World.
