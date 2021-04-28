@@ -7,6 +7,19 @@
         <div class="row mb-2">
             <div class="header">{{ user.username }}</div>
         </div>
+        <div class="row">
+            <div class="col md-8 blog-main" id="notes">
+                {% if notes %}
+                    {% for note in notes %}
+                        <div class="blog-post" id="note-container">
+                            <p class="blog-post-meta">{{ note.creation_date }}</p>
+                            <hr>
+                            <p class="blog-post-text">{{ note.text }}</p>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
     </div>
 </main>
 {% endblock %}

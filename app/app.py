@@ -149,9 +149,11 @@ def login():
 
 @app.route('/profile/<user_id>', methods=["GET"])
 def profile(user_id):
-    user = User.query.filter_by(id=user_id).first()
 
-    return render_template("profile.html", user=user)
+    user = User.query.filter_by(id=user_id).first()
+    all_notes = Notes.query.filter_by(creator_id=user.id).all()
+
+    return render_template("profile.html", user=user, notes=all_notes)
 
 @app.route('/new_world', methods=["POST", "GET"])
 def new_world():
