@@ -1,4 +1,5 @@
 from flask import Flask, session, redirect, url_for, render_template, request, flash, jsonify
+from flask_login import LoginManager, UserMixin, logout_user, login_user, current_user
 from flask_session import Session
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -9,7 +10,10 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 app = Flask(__name__)
 
+# Login manager
+login = LoginManager(app)
 
+# Database Configuration
 app.config['UPLOAD_FOLDER'] = '/doc/uploads/'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
@@ -22,13 +26,12 @@ Session(app)
 
 Migrate(app, db)
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-
 
 class World(db.Model):
     __tablename__ = 'worlds'
@@ -72,6 +75,12 @@ class Characters(db.Model):
     cha = db.Column(db.Integer)
     player_character = db.Column(db.Boolean)
     player_id = db.Column(db.Integer, nullable=True)
+
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
 
 @app.route("/")
 def index():
@@ -131,14 +140,18 @@ def login():
             session["user_name"] = username
             session["id"] = user.id
             db.session.commit()
+            login_user(user)
         else:
             flash('Incorrect username or password. Please try again.')
             return redirect("/login")
 
         return redirect("/")
 
+@app.route('/profile/<user_id>', methods=["GET"])
+def profile(user_id):
+    user = User.query.filter_by(id=user_id).first()
 
-
+    return render_template("profile.html", user=user)
 
 @app.route('/new_world', methods=["POST", "GET"])
 def new_world():
@@ -183,7 +196,12 @@ def new_character(world_id):
         if not session.get("user_name"):
             return redirect("/login")
 
-        if request.form.get("PC") == True:
+        pc = request.form.get("PC")
+        character_name = request.form.get("character_name")
+        print(f"form get character name: {character_name}")
+        print(f"form get PC: {pc}")
+
+        if request.form.get("PC") == "PC":
             user_id = session["id"]
             character = Characters(character_name=request.form.get("character_name"), world_id=world_id,
                                    description=request.form.get("description"),
@@ -191,10 +209,10 @@ def new_character(world_id):
                                    dex=request.form.get("dex"),
                                    int=request.form.get("int"), wis=request.form.get("wis"),
                                    cha=request.form.get("cha"), player_character=True, creator_id=user_id)
-
-        character = Characters(character_name=request.form.get("character_name"), world_id=world_id, description=request.form.get("description"),
-                               str=request.form.get("str"), con=request.form.get("con"), dex=request.form.get("dex"),
-                               int=request.form.get("int"), wis=request.form.get("wis"), cha=request.form.get("cha"))
+        else:
+            character = Characters(character_name=request.form.get("character_name"), world_id=world_id, description=request.form.get("description"),
+                                   str=request.form.get("str"), con=request.form.get("con"), dex=request.form.get("dex"),
+                                   int=request.form.get("int"), wis=request.form.get("wis"), cha=request.form.get("cha"))
         db.session.add(character)
         db.session.commit()
 
@@ -246,6 +264,7 @@ def location(location_id):
     world = World.query.filter_by(id=location.world_id).first()
 
 
+
     return render_template("location.html", location=location, notes=notes, world=world)
 
 
@@ -255,10 +274,21 @@ def character(character_id):
         return redirect("/login")
 
     character = Characters.query.filter_by(id=character_id).first()
+    owner = None
+    if character.player_character:
+        owner = User.query.filter_by(user_id=character.player_id)
+
     notes = Notes.query.filter_by(character_id=character_id).all()
     world = World.query.filter_by(id=character.world_id)
 
-    return render_template("character.html", character=character, notes=notes, world=world)
+    print(f"Name: {character.character_name}")
+    print(f"description: {character.description}")
+    print(character.player_character)
+    print(f"player id: {character.player_id}")
+    print(character.creation_date)
+
+
+    return render_template("character.html", character=character, notes=notes, owner=owner, world=world)
 
 
 @app.route('/create_note', methods=["POST"])
@@ -292,6 +322,7 @@ def create_note():
 def logout():
     session["logged_in"] = False
     session["user_name"] = None
+    logout_user()
     return redirect("/")
 
 # if __name__ == '__main__':

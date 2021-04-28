@@ -1,0 +1,12 @@
+{% extends "header.html" %}
+{% block title %}{{ user.username }} Profile{% endblock %}
+{% block header %}{{ user.username }} Profile{% endblock %}
+{% block body %}
+<main role="main" class="container">
+    <div class="col" id="profile">
+        <div class="row mb-2">
+            <div class="header">{{ user.username }}</div>
+        </div>
+    </div>
+</main>
+{% endblock %}

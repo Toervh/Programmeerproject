@@ -5,10 +5,15 @@
 <main role="main" class="container">
     <div class="col" id="overview">
         <div class="row mb-2">
-            <div class="header">{{ character.name }}</div>
+            <div class="header">{{ character.character_name }}</div>
         </div>
+        {% if owner %}
+        <div class="row mb-2">
+            Player: {{ owner.username }}
+        </div>
+        {% endif %}
         <div class="row md-2">
-            <div class="container-md">description of the character. + picture</div>
+            <div class="container-md">{{ character.description }}</div>
         </div>
         <div class="container" id="stats">
 <!--            Stats for the character go here.-->

@@ -5,21 +5,29 @@ Homepage
 {% endblock %}
 {% block body %}
 <main role="main" class="container">
-    <div class="row" id="worlds">
-        {% if worlds %}
-            {% for world in worlds %}
-                <div class="container-fluid" id="world">
-                    <a href="{{ url_for('world', world_id=world.id) }}"><h3>{{ world.name }}</h3></a>
-                    <h4>{{ world.description }}</h4>
-                </div>
-            {% endfor %}
-        {% else %}
-        <div class="container-fluid">
-            <p>Wow such empty</p>
-        </div>
-        {% endif %}
-        <div class="container-md" id="create_new_world">
-            <a href="{{ url_for('new_world') }}"><h4>Create New World</h4></a>
+    <div class="album py-5 bg-light" id="worlds">
+        <div class="container" id="world_list">
+            {% if worlds %}
+                {% for world in worlds %}
+                        <div class="col-md-4" id="world">
+                            <div class="card mb-4 box-shadow">
+                                <img class="card-img-top" style="height: 225px; width: 100%; display: block;">
+                                <a href="{{ url_for('world', world_id=world.id) }}"<h3 class="blog-post-title">{{ world.name }}</h3></a>
+                                <div class="card-body">
+                                    <p class="card-text">{{ world.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+            <div class="container-fluid">
+                <p>Wow such empty</p>
+            </div>
+            {% endif %}
+            <div class="container-md" id="create_new_world">
+                <a href="{{ url_for('new_world') }}"><h4>Create New World</h4></a>
+            </div>
         </div>
     </div>
 </main>
