@@ -76,6 +76,13 @@ class Characters(db.Model):
     player_character = db.Column(db.Boolean)
     player_id = db.Column(db.Integer, nullable=True)
 
+class User_world_connector(db.Model):
+    __tablename__ = 'user_world_connector'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    world_id = db.Column(db.Integer)
+
+
 
 @login.user_loader
 def load_user(id):
@@ -161,7 +168,9 @@ def new_world():
         if not session.get("user_name"):
             return redirect("/login")
 
-        return render_template("new_world.html")
+        all_users = User.query.all()
+
+        return render_template("new_world.html", users=all_users)
 
     if request.method == "POST":
         if not session.get("user_name"):
@@ -175,12 +184,15 @@ def new_world():
         # file = secure_filename(file.filename)
         # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
+        # TODO add users
+
         if len(world_description) > 500:
             flash('Max amount of words exceeded.')
             return redirect('/new_world')
         else:
             world = World(name=world_name, description=world_description, creator_name=session["user_name"])
             world_id = world.id
+
             flash("world created")
             db.session.add(world)
             db.session.commit()
@@ -291,6 +303,7 @@ def character(character_id):
 
 
     return render_template("character.html", character=character, notes=notes, owner=owner, world=world)
+
 
 
 @app.route('/create_note', methods=["POST"])
