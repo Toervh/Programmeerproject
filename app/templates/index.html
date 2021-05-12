@@ -9,23 +9,23 @@ Homepage
     <div class="album py-5 bg-light" id="worlds">
         <div class="container" id="world_list">
             <div class="row">
-                <div class="col-md-4" id="world">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" style="height: 225px; width: 100%; display: block;">
-                        <a href="{{ url_for('new_world') }}"<h3 class="blog-post-title">Create new world</h3></a>
-                        <div class="card-body">
-                            <p class="card-text"></p>
-                        </div>
+                <div class="col-md-4" id="location_card">
+                    <div class="card" style="width: 18rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">New World</h5>
+                        <a href="{{ url_for('new_world') }}" class="card-link">Create New World</a>
+                      </div>
                     </div>
                 </div>
                 {% if worlds %}
                     {% for world in worlds %}
-                        <div class="col-md-4" id="world">
-                            <div class="card mb-4 box-shadow">
-                                <img class="card-img-top" style="height: 225px; width: 100%; display: block;">
-                                <a href="{{ url_for('world', world_id=world.id) }}"<h3 class="blog-post-title">{{ world.name }}</h3></a>
+                        <div class="col-md-4" id="location_card">
+                            <div class="card" style="width: 18rem;">
                                 <div class="card-body">
+                                    <h5 class="card-title">{{ world.name }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">By: {{ world.creator_name }}</h6>
                                     <p class="card-text">{{ world.description }}</p>
+                                    <a href="{{ url_for('world', world_id=world.id) }}" class="card-link">View</a>
                                 </div>
                             </div>
                         </div>

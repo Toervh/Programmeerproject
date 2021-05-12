@@ -13,18 +13,17 @@
             </div>
         </div>
     </div>
-        <div class="row md-2">
+        <div class="album py-5 bg-light">
             <div class="container-md">{{ world.description }}</div>
         </div>
-    <div class="album py-5 bg-light" id="locations/characters">
+    <div class="album py-5 bg-light">
         <div class="container" id="player-list">
-            <div class="row">
-                {% if players %}
-                    {% for player in players %}
-                    <div class="column">
-                        <h4> {{ player.username }}</h4>
-                    </div>
-                    {% endfor %}
+            {% if players %}
+                {% for player in players %}
+                <div class="column">
+                    <h4> {{ player.username }}</h4>
+                </div>
+                {% endfor %}
                 {% endif %}
                 <div class="column">
                     <form action="/add_players" method="POST">
@@ -44,28 +43,29 @@
                 </div>
             </div>
         </div>
+    <div class="album py-5 bg-light" id="locations/characters">
         <div class="container" id="location_list">
             <div class="row">
                 <div class="container">
                     <h4>Locations</h4>
                 </div>
-                <div class="col-md-4" id="location">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" style="height: 225px; width: 100%; display: block;">
-                        <a href="{{ url_for('new_location', world_id=world.id) }}"<h3 class="blog-post-title">Create new location</h3></a>
-                        <div class="card-body">
-                            <p class="card-text">Create new location</p>
-                        </div>
+                <div class="col-md-4" id="location_card">
+                    <div class="card" style="width: 18rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">New Location</h5>
+                        <a href="{{ url_for('new_location', world_id=world.id) }}" class="card-link">Create New Location</a>
+                      </div>
                     </div>
                 </div>
                 {% if locations %}
                     {% for location in locations %}
-                        <div class="col-md-4" id="location">
-                            <div class="card mb-4 box-shadow">
-                                <img class="card-img-top" style="height: 225px; width: 100%; display: block;">
-                                <a href="{{ url_for('location', location_id=location.id) }}"<h3 class="blog-post-title">{{ location.location_name }}</h3></a>
+                        <div class="col-md-4" id="location_card">
+                            <div class="card" style="width: 18rem;">
                                 <div class="card-body">
+                                    <h5 class="card-title">{{ location.location_name }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">By: {{ location.creator_id.username }}</h6>
                                     <p class="card-text">{{ location.description }}</p>
+                                    <a href="{{ url_for('location', location_id=location.id) }}" class="card-link">View</a>
                                 </div>
                             </div>
                         </div>
@@ -78,27 +78,26 @@
                 <div class="container">
                     <h4>Characters</h4>
                 </div>
-                <div class="col-md-4" id="location">
-                    <div class="card mb-4 box-shadow">
-                        <img class="card-img-top" style="height: 225px; width: 100%; display: block;">
-                        <a href="{{ url_for('new_character', world_id=world.id) }}"<h3 class="blog-post-title">Create new character</h3></a>
-                        <div class="card-body">
-                            <p class="card-text">Create new character</p>
-                        </div>
+                <div class="col-md-4" id="location_card">
+                    <div class="card" style="width: 18rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">New Character</h5>
+                        <a href="{{ url_for('new_character', world_id=world.id) }}" class="card-link">Create New Character</a>
+                      </div>
                     </div>
                 </div>
                 {% if characters %}
                     {% for character in characters %}
-                            <div class="col-md-4" id="character">
-                                <div class="card mb-4 box-shadow">
-                                    <img class="card-img-top" style="height: 225px; width: 100%; display: block;">
-                                    <a href="{{ url_for('character', character_id=character.id) }}"<h3 class="blog-post-title">{{ character.character_name }}</h3></a>
-
-                                    <div class="card-body">
-                                        <p class="card-text">{{ character.description }}</p>
-                                    </div>
+                        <div class="col-md-4" id="location_card">
+                            <div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ character.character_name }}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">By: {{ character.creator_id.username }}</h6>
+                                    <p class="card-text">{{ character.description }}</p>
+                                    <a href="{{ url_for('character', character_id=character.id) }}" class="card-link">View</a>
                                 </div>
                             </div>
+                        </div>
                     {% endfor %}
                 {% endif %}
             </div>

@@ -142,7 +142,9 @@ li a:hover {
   text-align: left;
   padding-left: 4px;
 }
-
+#location_card {
+  text-align: left;
+}
 #notes {
   border-color: #555555;
   border-style: solid;
@@ -151,6 +153,15 @@ li a:hover {
 #character_overview {
   background-image: url('../party.jpg');
   background-size: cover;
+}
+/*TODO POSITION IN BOTTOM LEFT CORNER*/
+a.card-link {
+
+}
+.card-body {
+  width: flex;
+  height: 209px;
+  max-height: 209px;
 }
 #world_overview {
   background-image: url('../NSZcZIii07NgpnYTwuwdmBjhPEwIpo_NcoKE7cRDeM0.jpg');
