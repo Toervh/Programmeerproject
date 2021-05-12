@@ -7,19 +7,30 @@
         <div class="row mb-2">
             <div class="header">{{ user.username }}</div>
         </div>
-        <div class="row">
-            <div class="col md-8 blog-main" id="notes">
-                {% if notes %}
-                    {% for note in notes %}
-                        <div class="blog-post" id="note-container">
-                            <p class="blog-post-meta">{{ note.creation_date }}</p>
-                            <hr>
-                            <p class="blog-post-text">{{ note.text }}</p>
-                        </div>
-                    {% endfor %}
-                {% endif %}
+        <div class="col md-8 blog-main" id="notes">
+            <div class="row" style="padding-left: 3px;">
+                <h3>Notes</h3>
             </div>
-        </div>
+            <hr>
+            {% if notes %}
+                {% for note in notes %}
+                    <div class="blog-post" id="note">
+                        <div>
+                            <div class="col-sm">
+                                {% if note.location_id %}
+                                    <h5>Note at: {{ note.location_id }}</h5>
+                                {% elif note.character_id %}
+                                     <h5>Note at: {{ note.character_id }}</h5>
+                                {% endif %}
+                            </div>
+                            <p class="blog-post-meta" id="creation_date">{{ note.creation_date }}</p>
+                        </div>
+                        <hr>
+                        <p class="blog-post-text">{{ note.text }}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
     </div>
 </main>
 {% endblock %}

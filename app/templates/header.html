@@ -8,20 +8,26 @@
         <title>{% block title %}{% endblock title %} - NoteWorld</title>
     </head>
     <body>
+
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom" id="stickyHeader">
+
             <div class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-                <button class="btn btn-primary" onclick="goBack()">Go Back</button>
+                <button class="btn btn-primary" onclick="goBack()" id="back_button">Go Back</button>
             </div>
-            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0" id="title">{% block header %}{% endblock header %}</ul>
-            <div class="col-md-3 text-end">
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0" id="title"><a href="{{ url_for('index') }}">Index</a>&nbsp;&nbsp;{% block header %}{% endblock header %}</ul>
+            <div class="col-md-4 text-end" id="profile_buttons">
                 <h2>{{ session['username'] }}</h2>
                 {% if current_user.is_anonymous %}
                     <a href="/login" class="btn btn-primary">Login</a>
                 {% else %}
-                    <h4><a href="{{ url_for('profile', user_id=current_user.id) }}">{{ current_user.username }}</a></h4>
+                    <div class="col-sm"<a href="{{ url_for('profile', user_id=current_user.id) }}">{{ current_user.username }}</a></div>
                 {% endif %}
+                <div class="col-sm">
+                    <a href="/logout">Log Out</a>
+                </div>
             </div>
         </div>
+
         {% with messages = get_flashed_messages() %}
         <div container id="message">
               {% if messages %}

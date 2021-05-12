@@ -9,11 +9,6 @@
         <input type="text" id="world_name" placeholder="World Name" autocomplete="off" name="world_name">
         <input type="text" id="description" placeholder="Description" autocomplete="off" name="description">
 
-        <select class="form-control" multiple>
-            {% for user in users %}
-          <option>{{ user.username }}</option>
-            {% endfor %}
-        </select>
         <button value="submit">Create</button>
     </form>
 </div>

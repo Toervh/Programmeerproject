@@ -95,12 +95,16 @@ def index():
         return redirect("/login")
 
     username = session.get("user_name")
-
+    user_id = session.get("id")
     worlds = World.query.filter_by(creator_name=username).all()
-    # if not worlds:
-    #     return render_template("index.html")
-    for world in worlds:
-        print(world)
+
+    # Find all worlds that user is in as a player
+    connected_worlds = User_world_connector.query.filter_by(user_id=user_id).all()
+    if connected_worlds != None:
+        for world in connected_worlds:
+            connected_world = World.query.filter_by(id=world.world_id).first()
+            worlds.append(connected_world)
+
     return render_template("index.html", worlds=worlds)
 
 
@@ -122,6 +126,12 @@ def register():
         except:
             flash('Username already in use.')
             return redirect('/register')
+
+        session["logged_in"] = True
+        session["user_name"] = username
+        session["id"] = user.id
+        db.session.commit()
+        login_user(user)
 
         return render_template("registered.html")
 
@@ -250,11 +260,6 @@ def new_location(world_id):
 
         return redirect('/')
 
-#         ##TODO file upload
-#         # file = request.files['file']
-#         # file = secure_filename(file.filename)
-#         # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
 
 
 @app.route('/world/<world_id>')
@@ -265,8 +270,9 @@ def world(world_id):
     world = World.query.filter_by(id=world_id).first()
     locations = Locations.query.filter_by(world_id=world_id).all()
     characters = Characters.query.filter_by(world_id=world_id).all()
+    users = User.query.all()
 
-    return render_template("/world.html", world=world, locations=locations, characters=characters)
+    return render_template("/world.html", world=world, locations=locations, characters=characters, users=users)
 
 @app.route('/location/<location_id>')
 def location(location_id):
@@ -289,11 +295,12 @@ def character(character_id):
 
     character = Characters.query.filter_by(id=character_id).first()
     owner = None
+
     if character.player_character:
-        owner = User.query.filter_by(user_id=character.player_id)
+        owner = User.query.filter_by(user_id=character.player_id).first()
 
     notes = Notes.query.filter_by(character_id=character_id).all()
-    world = World.query.filter_by(id=character.world_id)
+    world = World.query.filter_by(id=character.world_id).first()
 
     print(f"Name: {character.character_name}")
     print(f"description: {character.description}")
@@ -331,7 +338,26 @@ def create_note():
         db.session.add(note)
         db.session.commit()
 
-    return jsonify(note_text)
+    return jsonify(note_text[0])
+
+@app.route('/add_players', methods=["POST"])
+def add_players():
+    players = request.form.getlist('players')
+    world_id = request.form.get('world_id')
+    print(world_id)
+    for player in players:
+        new_player = User_world_connector(user_id=player, world_id=world_id)
+        db.session.add(new_player)
+        db.session.commit()
+
+    locations = Locations.query.filter_by(world_id=world_id).all()
+    characters = Characters.query.filter_by(world_id=world_id).all()
+    users = User.query.all()
+
+
+    return redirect(f"/world/{world_id}")
+
+
 
 @app.route('/logout')
 def logout():
@@ -343,3 +369,4 @@ def logout():
 # if __name__ == '__main__':
 #     db.create_all()
 #     app.run(debug=True)
+

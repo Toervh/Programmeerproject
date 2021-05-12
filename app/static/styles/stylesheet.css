@@ -3,12 +3,10 @@
 /* Style the header */
 .header {
   padding: 10px 16px;
-  background: #555;
-  color: #f1f1f1;
+  color: white;
 }
 
 #title {
-  margin: auto;
   text-align: center;
 }
 /* Page content */
@@ -22,6 +20,7 @@
   top: 0;
   width: 100%
 }
+
 
 /* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
 .sticky + .content {
@@ -95,6 +94,11 @@ span.psw {
   padding-left: 3px;
   padding-top: 2px;
 }
+#create_new {
+  max-width: 900px;
+  align-self: center;
+
+}
 
 .profile {
   max-width: 60px;
@@ -105,4 +109,91 @@ span.psw {
 }
 .col-md-4 {
 text-align: center;
+}
+#score {
+    height: 80px;
+    width: 70px;
+    background-color: white;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    border-radius: 10px;
+    border-top: 0px;
+}
+#stats {
+  list-style-type: none;
+  background-color: #555555;
+}
+li {
+  padding-left: 5px;
+  padding-right: 5px;
+  float: center;
+}
+li a {
+  color: white;
+  text-align: center;
+  padding: 10px;
+  text-decoration: none;
+}
+li a:hover {
+  background-color: #111111;
+}
+#back_button {
+  text-align: left;
+  padding-left: 4px;
+}
+
+#notes {
+  border-color: #555555;
+  border-style: solid;
+  border-width: 1px;
+}
+#character_overview {
+  background-image: url('../party.jpg');
+  background-size: cover;
+}
+#world_overview {
+  background-image: url('../NSZcZIii07NgpnYTwuwdmBjhPEwIpo_NcoKE7cRDeM0.jpg');
+}
+#location_overview {
+  background-image: url('../784590c151c5021f15f1d61c99d47b16.png');
+}
+#character_name {
+  color: #cccccc;
+  width: auto;
+}
+#note {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+#logout_button {
+  margin-right: 2px;
+}
+#creation_date {
+  text-align: right;
+  padding-right: 3px;
+}
+#players {
+  width: 100px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #555555;
+}
+#profile_buttons {
+  text-align: right;
+  padding-right: 4px;
+}
+#note {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #cccccc;
+}
+#stat {
+  text-align: left;
+  padding-left: 2px;
+  width: 70px;
+}
+div {
+  border-style: solid;
+  border-color: red;
 }

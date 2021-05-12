@@ -1,17 +1,49 @@
 {% extends "header.html" %}
-{% block title %}{{ world.name }} Overview{% endblock %}
-{% block header %}{{ world.name }} Overview{% endblock %}
+{% block title %}World: {{ world.name }} {% endblock %}
+{% block header %}World: {{ world.name }} {% endblock %}
 {% block body %}
 <main role="main" class="container">
-    <div class="jumbotron text-center" id="overview">
+    <div class="jumbotron text-center" id="world_overview">
         <div class="row mb-2">
-            <div class="header" width="fluid">{{ world.name }}</div>
+            <div class="header" width="fluid"><h1>{{ world.name }}</h1></div>
         </div>
         <div class="row md-2">
-            <div class="container-md">description of the location. + picture</div>
+            <div class="container-md">
+                <h5>Created by: {{ world.creator_name }}</h5>
+            </div>
         </div>
     </div>
+        <div class="row md-2">
+            <div class="container-md">{{ world.description }}</div>
+        </div>
     <div class="album py-5 bg-light" id="locations/characters">
+        <div class="container" id="player-list">
+            <div class="row">
+                {% if players %}
+                    {% for player in players %}
+                    <div class="column">
+                        <h4> {{ player.username }}</h4>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="column">
+                    <form action="/add_players" method="POST">
+                        <label for="players">Choose a player to add</label>
+                        <input type="hidden" name="world_id" value="{{ world.id }}">
+                        <select name="players" id="players" multiple>
+                            {% if users %}
+                                {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.username }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                        <input type="hidden" value="{{ world.id }}">
+                          <br><br>
+                            <input type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+        </div>
         <div class="container" id="location_list">
             <div class="row">
                 <div class="container">
@@ -73,5 +105,26 @@
         </div>
     </div>
 </main>
+<script>
+    function addPlayers(event) {
+    event.preventDefault();
 
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+
+        if (this.readyState == 4 && this.status == 200) {
+                console.log(this);
+                document.getElementById("note_text").value = ""
+                const returned_note = document.createElement("p")
+                    returned_note.innerText = this.responseText
+                document.getElementById("submitted_notes").prepend(returned_note)
+       }
+    };
+    xmlhttp.open("POST", "/create_note", true);
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify([document.getElementById("note_text").value, document.getElementById("note_type").value,
+        document.getElementById("world_id").value, document.getElementById("character_id").value]));
+   }
+</script>
 {% endblock body %}
