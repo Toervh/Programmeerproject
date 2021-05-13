@@ -18,9 +18,9 @@
                         <div>
                             <div class="col-sm">
                                 {% if note.location_id %}
-                                    <h5>Note at: {{ note.location_id }}</h5>
+                                    <h5>Note at: {{ note.location.location_name }}</h5>
                                 {% elif note.character_id %}
-                                     <h5>Note at: {{ note.character_id }}</h5>
+                                     <h5>Note at: {{ note.character.character_name }}</h5>
                                 {% endif %}
                             </div>
                             <p class="blog-post-meta" id="creation_date">{{ note.creation_date }}</p>

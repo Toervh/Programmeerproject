@@ -66,7 +66,7 @@
                             <div class="card" style="width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ location.location_name }}</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">By: {{ location.creator_id.username }}</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">By: {{ location.creator.username }}</h6>
                                     <p class="card-text">{{ location.description }}</p>
                                     <a href="{{ url_for('location', location_id=location.id) }}" class="card-link">View</a>
                                 </div>
@@ -91,11 +91,11 @@
                 </div>
                 {% if characters %}
                     {% for character in characters %}
-                        <div class="col-md-4" id="location_card">
+                        <div class="col-md-4" id="character_card">
                             <div class="card" style="width: 18rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ character.character_name }}</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">By: {{ character.creator_id.username }}</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted">By: {{ character.creator.username }}</h6>
                                     <p class="card-text">{{ character.description }}</p>
                                     <a href="{{ url_for('character', character_id=character.id) }}" class="card-link">View</a>
                                 </div>
