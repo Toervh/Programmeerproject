@@ -20,7 +20,7 @@
                 {% if current_user.is_anonymous %}
                     <a href="/login" class="btn btn-primary">Login</a>
                 {% else %}
-                    <div class="col-sm"<a href="{{ url_for('profile', user_id=current_user.id) }}">{{ current_user.username }}</a></div>
+                    <div class="col-sm"><a href="{{ url_for('profile', user_id=current_user.id) }}">{{ current_user.username }}</a></div>
                 {% endif %}
                 <div class="col-sm">
                     <a href="/logout">Log Out</a>

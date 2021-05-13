@@ -10,10 +10,12 @@ from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy.orm import scoped_session, sessionmaker, relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 app = Flask(__name__)
 
 # Login manager
 login = LoginManager(app)
+
 
 # Database Configuration
 app.config['UPLOAD_FOLDER'] = '/doc/uploads/'
@@ -96,16 +98,15 @@ class User_world_connector(db.Model):
     world_id = db.Column(db.Integer, ForeignKey('worlds.id'))
 
 
-
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
 
-
 @app.route("/")
 def index():
     if not session.get("user_name"):
-        return redirect("/login")
+        flash('Please log in to continue to your World Page.')
+        return redirect(url_for('login'))
 
     username = session.get("user_name")
     user_id = session.get("id")
@@ -116,8 +117,12 @@ def index():
     if connected_worlds != None:
         for world in connected_worlds:
             connected_world = World.query.filter_by(id=world.world_id).first()
-            worlds.append(connected_world)
 
+            # Make sure there are no duplicates
+            if connected_world not in worlds:
+                worlds.append(connected_world)
+
+    print(current_user)
     return render_template("index.html", worlds=worlds)
 
 
@@ -131,10 +136,11 @@ def register():
         password = request.form.get("password")
         email = request.form.get("email")
 
-        user = User(username=username, password=password, email=email)
-        db.session.add(user)
+        hashed_password = generate_password_hash(password)
 
         try:
+            user = User(username=username, password=hashed_password, email=email)
+            db.session.add(user)
             db.session.commit()
         except:
             flash('Username already in use.')
@@ -153,8 +159,9 @@ def register():
 @app.route('/login', methods=["POST", "GET"])
 def login():
     if request.method == "GET":
-        if session.get("name"):
-            return redirect("/index.html", message="You are already logged in.")
+        if session.get("user_name"):
+            flash('You are already logged in.')
+            return redirect(url_for('index'))
         return render_template("login.html")
 
     if request.method == "POST":
@@ -164,21 +171,35 @@ def login():
 
         if not user:
             flash('Incorrect username or password. Please try again.')
-            return redirect("/login")
-        if user.password == password:
+            return redirect(url_for('login'))
+
+        # Checking hashed password
+        result = check_password_hash(user.password, password)
+        if result is False:
+            flash('Incorrect password. Please try again.')
+            return redirect(url_for('login'))
+
+        else:
             session["logged_in"] = True
             session["user_name"] = username
             session["id"] = user.id
             db.session.commit()
             login_user(user)
-        else:
-            flash('Incorrect username or password. Please try again.')
-            return redirect("/login")
 
-        return redirect("/")
+            return redirect(url_for('index'))
+
+        return redirect(url_for('index'))
 
 @app.route('/profile/<user_id>', methods=["GET"])
 def profile(user_id):
+    if not session.get("user_name"):
+        flash('You are not logged in.')
+        return redirect(url_for('login'))
+
+
+    if int(session["id"]) is not int(user_id):
+        flash('For now, you cannot visit other peoples userpage.')
+        return redirect(url_for('index'))
 
     user = User.query.filter_by(id=user_id).first()
     all_notes = Notes.query.filter_by(creator_id=user.id).all()
@@ -190,7 +211,8 @@ def profile(user_id):
 def new_world():
     if request.method == "GET":
         if not session.get("user_name"):
-            return redirect("/login")
+            flash('You are not logged in.')
+            return redirect(url_for('login'))
 
         all_users = User.query.all()
 
@@ -198,7 +220,8 @@ def new_world():
 
     if request.method == "POST":
         if not session.get("user_name"):
-            return redirect("/login")
+            flash('You are not logged in.')
+            return redirect(url_for('login'))
 
         world_name = request.form.get("world_name")
         world_description = request.form.get("description")
@@ -221,12 +244,14 @@ def new_world():
 def new_character(world_id):
     if request.method == "GET":
         if not session.get("user_name"):
-            return redirect("/login")
+            flash('You are not logged in.')
+            return redirect(url_for('login'))
         return render_template("new_character.html", world_id=world_id)
 
     if request.method == "POST":
         if not session.get("user_name"):
-            return redirect("/login")
+            flash('You are not logged in.')
+            return redirect(url_for('login'))
 
         pc = request.form.get("PC")
         character_name = request.form.get("character_name")
@@ -255,12 +280,14 @@ def new_character(world_id):
 def new_location(world_id):
     if request.method == "GET":
         if not session.get("user_name"):
-            return redirect("/login")
+            flash('You are not logged in.')
+            return redirect(url_for('login'))
         return render_template("new_location.html")
 
     if request.method == "POST":
         if not session.get("user_name"):
-            return redirect("/login")
+            flash('You are not logged in.')
+            return redirect(url_for('login'))
 
         location = Locations(location_name=request.form.get("location_name"), world_id=world_id, description=request.form.get("description"),
                              creator_id=session["id"])
@@ -274,7 +301,8 @@ def new_location(world_id):
 @app.route('/world/<world_id>')
 def world(world_id):
     if not session.get("user_name"):
-        return redirect("/login")
+        flash('You are not logged in.')
+        return redirect(url_for('login'))
 
     world = World.query.filter_by(id=world_id).first()
     locations = Locations.query.filter_by(world_id=world_id).all()
@@ -286,7 +314,8 @@ def world(world_id):
 @app.route('/location/<location_id>')
 def location(location_id):
     if not session.get("user_name"):
-        return redirect("/login")
+        flash('You are not logged in.')
+        return redirect(url_for('login'))
 
     location = Locations.query.filter_by(id=location_id).first()
     notes = Notes.query.filter_by(location_id=location_id).all()
@@ -300,7 +329,8 @@ def location(location_id):
 @app.route('/character/<character_id>')
 def character(character_id):
     if not session.get("user_name"):
-        return redirect("/login")
+        flash('You are not logged in.')
+        return redirect(url_for('login'))
 
     character = Characters.query.filter_by(id=character_id).first()
     owner = None
