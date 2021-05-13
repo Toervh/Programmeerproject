@@ -20,7 +20,9 @@
   top: 0;
   width: 100%
 }
-
+.stickyHeader {
+    background-color: grey;
+}
 
 /* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
 .sticky + .content {
@@ -33,12 +35,13 @@ form {
 
 /* Full-width inputs */
 input[type=text], input[type=password] {
-  width: 100%;
+  width: 40%;
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  text-align: center;
 }
 
 /* Set a style for all buttons */
@@ -207,4 +210,10 @@ a.card-link {
 div {
   border-style: solid;
   border-color: red;
+}
+
+.py-3 {
+    background-color: gray;
+    margin-bottom: 0px;
+    margin-top: 0px;
 }
