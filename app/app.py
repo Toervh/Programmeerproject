@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy.orm import scoped_session, sessionmaker, relationship
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
@@ -203,12 +203,6 @@ def new_world():
         world_name = request.form.get("world_name")
         world_description = request.form.get("description")
 
-        ##TODO file upload
-        # file = request.files['file']
-        # file = secure_filename(file.filename)
-        # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-        # TODO add users
 
         if len(world_description) > 500:
             flash('Max amount of words exceeded.')
