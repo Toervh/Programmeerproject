@@ -157,14 +157,16 @@ li a:hover {
   background-image: url('../party.jpg');
   background-size: cover;
 }
-/*TODO POSITION IN BOTTOM LEFT CORNER*/
 a.card-link {
-
+  position: absolute;
+  bottom: 5px;
+  left: 6px;
 }
 .card-body {
   width: flex;
   height: 209px;
   max-height: 209px;
+  position: relative;
 }
 #world_overview {
   background-image: url('../NSZcZIii07NgpnYTwuwdmBjhPEwIpo_NcoKE7cRDeM0.jpg');

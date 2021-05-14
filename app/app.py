@@ -354,6 +354,9 @@ def character(character_id):
 
 @app.route('/create_note', methods=["POST"])
 def create_note():
+    if not session.get("user_name"):
+        flash('You are not logged in.')
+        return redirect(url_for('login'))
 
     note_text = request.json
     print(note_text)
@@ -381,6 +384,10 @@ def create_note():
 
 @app.route('/add_players', methods=["POST"])
 def add_players():
+    if not session.get("user_name"):
+        flash('You are not logged in.')
+        return redirect(url_for('login'))
+
     players = request.form.getlist('players')
     world_id = request.form.get('world_id')
     print(world_id)
@@ -396,6 +403,25 @@ def add_players():
 
     return redirect(f"/world/{world_id}")
 
+
+@app.route('/search/', methods=["GET", "POST"])
+def search():
+    if not session.get("user_name"):
+        flash('You are not logged in.')
+        return redirect(url_for('login'))
+
+    query = request.args.get('search')
+
+    print(query)
+
+    query = "%{}%".format(query)
+    location_results = Locations.query.filter(Locations.location_name.like(query))
+    character_results = Characters.query.filter(Characters.character_name.like(query))
+    world_results = World.query.filter(World.name.like(query))
+    note_results = Notes.query.filter(Notes.text.like(query))
+
+    return render_template("search.html", location_results=location_results, character_results=character_results,
+                    world_results=world_results, note_results=note_results)
 
 
 @app.route('/logout')

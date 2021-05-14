@@ -1,0 +1,76 @@
+{% extends "header.html" %}
+{% block title %}Search results{% endblock %}
+{% block header %}Search results{% endblock %}
+{% block body %}
+<main role="main" class="container">
+    <div class="title"><h3>Search results</h3></div>
+    <div class="album py-5 bg-light">
+        {% if location_results %}
+        <div class="container" id="location_list">
+            <div class="row">
+                <div class="container">
+                    <h4>Locations</h4>
+                </div>
+            </div>
+            {% for location in location_results %}
+                <div class="col-md-4" id="location_card">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ location.location_name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">By: {{ location.creator.username }}</h6>
+                            <p class="card-text">{{ location.description }}</p>
+                            <a href="{{ url_for('location', location_id=location.id) }}" class="card-link">View</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if character_results %}
+        <div class="container" id="character_list">
+            <div class="row">
+                <div class="container">
+                    <h4>Characters</h4>
+                </div>
+            </div>
+            {% for character in character_results %}
+                <div class="col-md-4" id="character_card">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ character.name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">By: {{ character.creator.username }}</h6>
+                            <p class="card-text">{{ character.description }}</p>
+                            <a href="{{ url_for('character', character_id=character.id) }}" class="card-link">View</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if note_results %}
+        <div class="container" id="location_list">
+            <div class="row">
+                <div class="container">
+                    <h4>Notes</h4>
+                </div>
+            </div>
+            {% for note in note_results %}
+                <div class="blog-post" id="note">
+                    <div class="col-sm">
+                        {% if note.location_id %}
+                            <h5>Note at: {{ note.location.location_name }}</h5>
+                        {% elif note.character_id %}
+                             <h5>Note at: {{ note.character.character_name }}</h5>
+                        {% endif %}
+                    </div>
+                    <p class="blog-post-meta" id="creation_date">{{ note.creation_date }}</p>
+                    <hr>
+                    <p class="blog-post-text">{{ note.text }}</p>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    </div>
+</main>
+{% endblock body %}
