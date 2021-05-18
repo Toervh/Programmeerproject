@@ -2,119 +2,118 @@
 {% block title %}{{ character.character_name }}{% endblock %}
 {% block header %}{{ character.character_name }}{% endblock %}
 {% block body %}
-<main role="main" class="container">
-    <div class="jumbotron text-center" id="character_overview">
-        <div class="row mb-2">
-            <div class="header" id="character_name"><h1>{{ character.character_name }}</h1></div>
-        </div>
-        <div class="row md-2">
-            <div class="container-md">
-<!--                TODO CREATE CONNECTION IN DATABASE -->
-                <h5>Created by: {{ character.creator_id.username }}</h5>
+    <main role="main" class="container">
+        <div class="jumbotron text-center" id="character_overview">
+            <div class="row mb-2">
+                <div class="header" id="character_name"><h1>{{ character.character_name }}</h1></div>
             </div>
-        </div>
+            <div class="row md-2">
+                <div class="container-md">
+                    <h5>Created by: {{ character.creator_id.username }}</h5>
+                </div>
+            </div>
 
-    </div>
-    <div class="col md-8 blog-main">
-        <div class="row">
-            <div class="container_title" style="text-align: left; padding-left: 3px;"><h4>Description</h4></div>
         </div>
-        <div class="row">
-            <div class="container-md">{{ character.description }}</div>
+        <div class="col md-8 blog-main">
+            <div class="row">
+                <div class="container_title" style="text-align: left; padding-left: 3px;"><h4>Description</h4></div>
+            </div>
+            <div class="row">
+                <div class="container-md">{{ character.description }}</div>
+            </div>
+            {% if owner %}
+            <div class="row mb-2">
+                <h3>Player: {{ owner.username }}</h3>
+            </div>
+            {% endif %}
         </div>
-        {% if owner %}
-        <div class="row mb-2">
-            <h3>Player: {{ owner.username }}</h3>
-        </div>
-        {% endif %}
-    </div>
-        {% if character.str %}
-            <div class="list-group list-group-horizontal" id="stats">
-                <ul>
-                    <li>
-                        <div class="listgroupitem" id="strengthscore">
-                            <div class="score">{{ character.str }}</div>
-                            <label for="strengthscore"
-                        </div>
-                    </li>
+            {% if character.str %}
+                <div class="list-group list-group-horizontal" id="stats">
+                    <ul>
+                        <li>
+                            <div class="listgroupitem" id="strengthscore">
+                                <div class="score">{{ character.str }}</div>
+                                <label for="strengthscore"
+                            </div>
+                        </li>
+                                <li>
+                            <div class="listgroupitem" id="dexterityscore">
+                                <label for="dexterityscore">{{ character.dex }}</label>
+                            </div>
+                        </li>
                             <li>
-                        <div class="listgroupitem" id="dexterityscore">
-                            <label for="dexterityscore">{{ character.dex }}</label>
-                        </div>
-                    </li>
-                        <li>
-                        <div class="listgroupitem" id="constitutionscore">
-                            <div class="score">
-                                <label for="constitutionscore">{{ character.con }}</label>
-                            </div>
-
-                        </div>
-                    </li>
-                        <li>
-                        <div class="listgroupitem" id="intelligencescore">
-                            <div class="score">
-                            <label for="intelligencescore">{{ character.int }}</label>
-                            </div>
-                        </div>
-                    </li>
-                        <li>
-                        <div class="listgroupitem" id="wisdomscore">
-                            <div class="score">
-                                <label for="wisdomscore">{{ character.wis }}</label>
+                            <div class="listgroupitem" id="constitutionscore">
+                                <div class="score">
+                                    <label for="constitutionscore">{{ character.con }}</label>
                                 </div>
-                        </div>
-                    </li>
-                        <li>
-                        <div class="listgroupitem" id="charismascore">
-                            <div class="score">
-                                <label for="charismascore">{{ character.cha }}</label>
+
+                            </div>
+                        </li>
+                            <li>
+                            <div class="listgroupitem" id="intelligencescore">
+                                <div class="score">
+                                <label for="intelligencescore">{{ character.int }}</label>
                                 </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        {% endif %}
-        <div class="row">
-
-            <div class="col md-8 blog-main" id="notes">
-                <div class="row" style="padding-left: 3px;">
-                    <h3>Notes</h3>
+                            </div>
+                        </li>
+                            <li>
+                            <div class="listgroupitem" id="wisdomscore">
+                                <div class="score">
+                                    <label for="wisdomscore">{{ character.wis }}</label>
+                                    </div>
+                            </div>
+                        </li>
+                            <li>
+                            <div class="listgroupitem" id="charismascore">
+                                <div class="score">
+                                    <label for="charismascore">{{ character.cha }}</label>
+                                    </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <hr>
-                {% if notes %}
-                    {% for note in notes %}
-                        <div class="blog-post" id="note">
-                            <p class="blog-post-meta" id="creation_date">{{ note.creation_date }}</p>
-                            <hr>
-                            <p class="blog-post-text">{{ note.text }}</p>
-                        </div>
-                    {% endfor %}
-                    {% else %}
-                <div class="blog-post">
-                    <p class="blog-post-meta">No Notes added yet. Be the first!</p>
-                </div>
-                {% endif %}
-                <div class="container" id="submitted_notes"></div>
-            </div>
+            {% endif %}
+            <div class="row">
 
-            <div class="col md-8 blog-main">
-                <div class="container" id="new_note">
+                <div class="col md-8 blog-main" id="notes">
+                    <div class="row" style="padding-left: 3px;">
+                        <h3>Notes</h3>
+                    </div>
+                    <hr>
+                    {% if notes %}
+                        {% for note in notes %}
+                            <div class="blog-post" id="note">
+                                <p class="blog-post-meta" id="creation_date">{{ note.creation_date }}</p>
+                                <hr>
+                                <p class="blog-post-text">{{ note.text }}</p>
+                            </div>
+                        {% endfor %}
+                        {% else %}
+                    <div class="blog-post">
+                        <p class="blog-post-meta">No Notes added yet. Be the first!</p>
+                    </div>
+                    {% endif %}
+                    <div class="container" id="submitted_notes"></div>
+                </div>
 
-                    <form id="new_note" onsubmit="createNote(event)">
-                          <div class="form-group">
-                            <label for="note_text">Create Note</label>
-                            <textarea name="note_text" class="form-control" id="note_text" rows="3" placeholder="description"></textarea>
-                              <input type="hidden" id="world_id" value="{{ world.id }}">
-                              <input type="hidden" id="note_type" value="character">
-                              <input type="hidden" id="character_id" value="{{ character.id }}">
-                              <hr>
-                              <button type="submit">Create Note</button>
-                          </div>
-                    </form>
+                <div class="col md-8 blog-main">
+                    <div class="container" id="new_note">
+
+                        <form id="new_note" onsubmit="createNote(event)">
+                              <div class="form-group">
+                                <label for="note_text">Create Note</label>
+                                <textarea name="note_text" class="form-control" id="note_text" rows="3" placeholder="description"></textarea>
+                                  <input type="hidden" id="world_id" value="{{ world.id }}">
+                                  <input type="hidden" id="note_type" value="character">
+                                  <input type="hidden" id="character_id" value="{{ character.id }}">
+                                  <hr>
+                                  <button type="submit">Create Note</button>
+                              </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-</main>
+    </main>
 <script>
     function createNote(event) {
         event.preventDefault();

@@ -122,7 +122,6 @@ def index():
             if connected_world not in worlds:
                 worlds.append(connected_world)
 
-    print(current_user)
     return render_template("index.html", worlds=worlds)
 
 
@@ -190,6 +189,15 @@ def login():
 
         return redirect(url_for('index'))
 
+
+@app.route('/logout')
+def logout():
+    session["logged_in"] = False
+    session["user_name"] = None
+    logout_user()
+    return redirect("/")
+
+
 @app.route('/profile/<user_id>', methods=["GET"])
 def profile(user_id):
     if not session.get("user_name"):
@@ -206,6 +214,7 @@ def profile(user_id):
 
 
     return render_template("profile.html", user=user, notes=all_notes)
+
 
 @app.route('/new_world', methods=["POST", "GET"])
 def new_world():
@@ -255,8 +264,6 @@ def new_character(world_id):
 
         pc = request.form.get("PC")
         character_name = request.form.get("character_name")
-        print(f"form get character name: {character_name}")
-        print(f"form get PC: {pc}")
         user_id = session["id"]
 
         if request.form.get("PC") == "PC":
@@ -311,6 +318,7 @@ def world(world_id):
 
     return render_template("/world.html", world=world, locations=locations, characters=characters, users=users)
 
+
 @app.route('/location/<location_id>')
 def location(location_id):
     if not session.get("user_name"):
@@ -341,13 +349,6 @@ def character(character_id):
     notes = Notes.query.filter_by(character_id=character_id).all()
     world = World.query.filter_by(id=character.world_id).first()
 
-    print(f"Name: {character.character_name}")
-    print(f"description: {character.description}")
-    print(character.player_character)
-    print(f"player id: {character.player_id}")
-    print(character.creation_date)
-
-
     return render_template("character.html", character=character, notes=notes, owner=owner, world=world)
 
 
@@ -359,17 +360,12 @@ def create_note():
         return redirect(url_for('login'))
 
     note_text = request.json
-    print(note_text)
-    print(note_text[0])
-    print(note_text[1])
-    print(note_text[2])
-    print(note_text[3])
     user_id = session["id"]
 
     if note_text[1] == 'location':
         note = Notes(world_id=note_text[2], creator_id=user_id, text=note_text[0], location_id=note_text[3])
 
-    if note_text[1] == 'character':
+    elif note_text[1] == 'character':
         note = Notes(world_id=note_text[2], creator_id=user_id, text=note_text[0], character_id=note_text[3])
 
     if not note:
@@ -390,7 +386,7 @@ def add_players():
 
     players = request.form.getlist('players')
     world_id = request.form.get('world_id')
-    print(world_id)
+
     for player in players:
         new_player = User_world_connector(user_id=player, world_id=world_id)
         db.session.add(new_player)
@@ -411,10 +407,8 @@ def search():
         return redirect(url_for('login'))
 
     query = request.args.get('search')
-
-    print(query)
-
     query = "%{}%".format(query)
+
     location_results = Locations.query.filter(Locations.location_name.like(query))
     character_results = Characters.query.filter(Characters.character_name.like(query))
     world_results = World.query.filter(World.name.like(query))
@@ -423,15 +417,4 @@ def search():
     return render_template("search.html", location_results=location_results, character_results=character_results,
                     world_results=world_results, note_results=note_results)
 
-
-@app.route('/logout')
-def logout():
-    session["logged_in"] = False
-    session["user_name"] = None
-    logout_user()
-    return redirect("/")
-
-# if __name__ == '__main__':
-#     db.create_all()
-#     app.run(debug=True)
 
