@@ -2,8 +2,9 @@
 {% block title %}Create New Location{% endblock %}
 {% block header %}Create New Location{% endblock %}
 {% block body %}
-    <main role="main">
-        <div class="text-center">
+<main role="main">
+    <div class="album py-5 bg-light">
+        <div class="container">
             <form id="create_new" method="post">
                 <h2 class="h3 mb-3 font-weight-normal">Create New Location</h2>
                 <input type="text" id="location_name" placeholder="Location Name" autocomplete="off" name="location_name">
@@ -11,5 +12,6 @@
                 <button value="submit">Create</button>
             </form>
         </div>
-    </main>
+    </div>
+</main>
 {% endblock body %}

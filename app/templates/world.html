@@ -8,17 +8,17 @@
             <div class="header" width="fluid"><h1>{{ world.name }}</h1></div>
         </div>
         <div class="row md-2">
-            <div class="container-md">
+            <div class="container-md" id="creator_name">
                 <h5>Created by: {{ world.creator_name }}</h5>
             </div>
         </div>
     </div>
-        <div class="album py-5 bg-light">
-            <div class="container">
-                <h3 id="description_header">Description</h3>
-            </div>
-            <div class="container-md">{{ world.description }}</div>
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <h3 id="description_header">Description</h3>
         </div>
+        <div class="container-md" id="description-text">{{ world.description }}</div>
+    </div>
     <div class="album py-5 bg-light">
         <div class="container" id="player-list">
             {% if players %}
@@ -27,34 +27,36 @@
                     <h4> {{ player.username }}</h4>
                 </div>
                 {% endfor %}
-                {% endif %}
-                <div class="column">
-                    <form action="/add_players" method="POST">
-                        <label for="players">Choose a player to add</label>
-                        <input type="hidden" name="world_id" value="{{ world.id }}">
-                        <select name="players" id="players" multiple>
-                            {% if users %}
-                                {% for user in users %}
-                                <option value="{{ user.id }}">{{ user.username }}</option>
-                                {% endfor %}
-                            {% endif %}
-                        </select>
-                        <input type="hidden" value="{{ world.id }}">
-                          <br><br>
-                            <input type="submit" value="Submit">
-                    </form>
-                </div>
+            {% endif %}
+
+            <div class="column">
+                <form action="/add_players" method="POST">
+                    <label for="players">Choose a player to add</label>
+                    <input type="hidden" name="world_id" value="{{ world.id }}">
+                    <select name="players" id="players" multiple>
+                        {% if users %}
+                            {% for user in users %}
+                            <option value="{{ user.id }}">{{ user.username }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                    <input type="hidden" value="{{ world.id }}">
+                    <br><br>
+                    <input type="submit" value="Submit">
+                </form>
             </div>
+
         </div>
+    </div>
     <div class="album py-5 bg-light" id="locations/characters">
         <div class="container" id="location_list">
             <div class="row">
                 <div class="container">
                     <h4>Locations</h4>
                 </div>
-                <div class="col-md-4" id="location_card">
+                <div class="col-md-4" id="card_col">
                     <div class="card" style="width: 18rem;">
-                      <div class="card-body">
+                      <div class="card-body" id="new_card">
                         <h5 class="card-title">New Location</h5>
                         <a href="{{ url_for('new_location', world_id=world.id) }}" class="card-link">Create New Location</a>
                       </div>
@@ -62,9 +64,9 @@
                 </div>
                 {% if locations %}
                     {% for location in locations %}
-                        <div class="col-md-4" id="location_card">
+                        <div class="col-md-4" id="card_col">
                             <div class="card" style="width: 18rem;">
-                                <div class="card-body">
+                                <div class="card-body" id="location_card">
                                     <h5 class="card-title">{{ location.location_name }}</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">By: {{ location.creator.username }}</h6>
                                     <p class="card-text">{{ location.description }}</p>
@@ -81,9 +83,9 @@
                 <div class="container">
                     <h4>Characters</h4>
                 </div>
-                <div class="col-md-4" id="location_card">
+                <div class="col-md-4"id="card_col">
                     <div class="card" style="width: 18rem;">
-                      <div class="card-body">
+                      <div class="card-body" id="new_card">
                         <h5 class="card-title">New Character</h5>
                         <a href="{{ url_for('new_character', world_id=world.id) }}" class="card-link">Create New Character</a>
                       </div>
@@ -91,9 +93,9 @@
                 </div>
                 {% if characters %}
                     {% for character in characters %}
-                        <div class="col-md-4" id="character_card">
+                        <div class="col-md-4" id="card_col">
                             <div class="card" style="width: 18rem;">
-                                <div class="card-body">
+                                <div class="card-body" id="character_card">
                                     <h5 class="card-title">{{ character.character_name }}</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">By: {{ character.creator.username }}</h6>
                                     <p class="card-text">{{ character.description }}</p>

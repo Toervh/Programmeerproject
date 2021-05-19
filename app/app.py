@@ -122,6 +122,7 @@ def index():
             if connected_world not in worlds:
                 worlds.append(connected_world)
 
+
     return render_template("index.html", worlds=worlds)
 
 
@@ -189,15 +190,6 @@ def login():
 
         return redirect(url_for('index'))
 
-
-@app.route('/logout')
-def logout():
-    session["logged_in"] = False
-    session["user_name"] = None
-    logout_user()
-    return redirect("/")
-
-
 @app.route('/profile/<user_id>', methods=["GET"])
 def profile(user_id):
     if not session.get("user_name"):
@@ -214,7 +206,6 @@ def profile(user_id):
 
 
     return render_template("profile.html", user=user, notes=all_notes)
-
 
 @app.route('/new_world', methods=["POST", "GET"])
 def new_world():
@@ -262,10 +253,13 @@ def new_character(world_id):
             flash('You are not logged in.')
             return redirect(url_for('login'))
 
+        # Get information from the form.
         pc = request.form.get("PC")
         character_name = request.form.get("character_name")
+
         user_id = session["id"]
 
+        # If the PC button was clicked, create a player avatar. Essentially a character but the creator is the owner of this character.
         if request.form.get("PC") == "PC":
             character = Characters(character_name=request.form.get("character_name"), world_id=world_id,
                                    description=request.form.get("description"),
@@ -273,6 +267,7 @@ def new_character(world_id):
                                    dex=request.form.get("dex"),
                                    int=request.form.get("int"), wis=request.form.get("wis"),
                                    cha=request.form.get("cha"), player_character=True, creator_id=user_id)
+        # Create the character but without the Player_character set to True.
         else:
             character = Characters(character_name=request.form.get("character_name"), world_id=world_id, creator_id=user_id, description=request.form.get("description"),
                                    str=request.form.get("str"), con=request.form.get("con"), dex=request.form.get("dex"),
@@ -318,7 +313,6 @@ def world(world_id):
 
     return render_template("/world.html", world=world, locations=locations, characters=characters, users=users)
 
-
 @app.route('/location/<location_id>')
 def location(location_id):
     if not session.get("user_name"):
@@ -349,6 +343,7 @@ def character(character_id):
     notes = Notes.query.filter_by(character_id=character_id).all()
     world = World.query.filter_by(id=character.world_id).first()
 
+
     return render_template("character.html", character=character, notes=notes, owner=owner, world=world)
 
 
@@ -359,13 +354,15 @@ def create_note():
         flash('You are not logged in.')
         return redirect(url_for('login'))
 
+    # Get the information sent.
     note_text = request.json
+
     user_id = session["id"]
 
     if note_text[1] == 'location':
         note = Notes(world_id=note_text[2], creator_id=user_id, text=note_text[0], location_id=note_text[3])
 
-    elif note_text[1] == 'character':
+    if note_text[1] == 'character':
         note = Notes(world_id=note_text[2], creator_id=user_id, text=note_text[0], character_id=note_text[3])
 
     if not note:
@@ -386,7 +383,7 @@ def add_players():
 
     players = request.form.getlist('players')
     world_id = request.form.get('world_id')
-
+    print(world_id)
     for player in players:
         new_player = User_world_connector(user_id=player, world_id=world_id)
         db.session.add(new_player)
@@ -417,4 +414,15 @@ def search():
     return render_template("search.html", location_results=location_results, character_results=character_results,
                     world_results=world_results, note_results=note_results)
 
+
+@app.route('/logout')
+def logout():
+    session["logged_in"] = False
+    session["user_name"] = None
+    logout_user()
+    return redirect("/")
+
+# if __name__ == '__main__':
+#     db.create_all()
+#     app.run(debug=True)
 

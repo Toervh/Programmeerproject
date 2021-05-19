@@ -13,9 +13,9 @@
                 </div>
             </div>
             {% for location in location_results %}
-                <div class="col-md-4" id="location_card">
+                <div class="col-md-4" id="card_col">
                     <div class="card" style="width: 18rem;">
-                        <div class="card-body">
+                        <div class="card-body" id="location_card">
                             <h5 class="card-title">{{ location.location_name }}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">By: {{ location.creator.username }}</h6>
                             <p class="card-text">{{ location.description }}</p>
@@ -34,9 +34,9 @@
                 </div>
             </div>
             {% for character in character_results %}
-                <div class="col-md-4" id="character_card">
+                <div class="col-md-4" id="card_col">
                     <div class="card" style="width: 18rem;">
-                        <div class="card-body">
+                        <div class="card-body" id="character_card">
                             <h5 class="card-title">{{ character.name }}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">By: {{ character.creator.username }}</h6>
                             <p class="card-text">{{ character.description }}</p>
