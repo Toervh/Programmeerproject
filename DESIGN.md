@@ -47,9 +47,9 @@ When you view a location or character you are lead to a page where you can view 
 <br>
 Character page:
 <br>
-![locations/characters](/doc/character%20page.jpg)
+![character_page](/doc/character%20page.jpg)
 <br>
-Location page link.
+![locations_page](/doc/location%20page.jpg)
 The user can find the function for adding notes below the added notes container.
 
 ###New Location and Character
