@@ -2,56 +2,58 @@
 {% block title %}Create New Character{% endblock %}
 {% block header %}Create New Character{% endblock %}
 {% block body %}
-<main role="main" class="container">
-    <div class="text-center">
-        <form id="create_new" method="post">
-            <h2 class="h3 mb-3 font-weight-normal">Create New Character</h2>
+<div role="main" class="container">
+    <div class="album py-5 bg-light">
+        <div class="text-center">
+            <form id="create_new" method="post">
+                <h2 class="h3 mb-3 font-weight-normal">Create New Character</h2>
 
-            <input type="text" id="character_name" placeholder="Character Name" autocomplete="off" name="character_name">
-            <input type="text" id="description" placeholder="Description" autocomplete="off" name="description">
-            <input type="hidden" id="world_id" value="{{ world_id }}" name="world_id">
+                <input type="text" id="character_name" placeholder="Character Name" autocomplete="off" name="character_name">
+                <input type="text" id="description" placeholder="Description" autocomplete="off" name="description">
+                <input type="hidden" id="world_id" value="{{ world_id }}" name="world_id">
 
 
 
-            <div class="container" id="create_stats">
-                <div class="col-sm">
-                    <label for="str">Strength</label>
-                    <input class="form-control" id="str" type="text" name="str">
+                <div class="container" id="create_stats">
+                    <div class="col-sm">
+                        <label for="str">Strength</label>
+                        <input class="form-control" id="str" type="text" name="str">
+                    </div>
+                    <div class="col-sm">
+                        <label for="con">Constitution</label>
+                        <input class="form-control" id="con" type="text" name="con">
+                    </div>
+                    <div class="col-sm">
+                        <label for="dex">Dexterity</label>
+                        <input class="form-control" id="dex" type="text" name="dex">
+                    </div>
+                    <div class="col-sm">
+                        <label for="int">Intelligence</label>
+                        <input class="form-control" id="int" type="text" name="int">
+                    </div>
+                    <div class="col-sm">
+                        <label for="wis">Wisdom</label>
+                        <input class="form-control" id="wis" type="text" name="wis">
+                    </div>
+                    <div class="col-sm"">
+                        <label for="cha">Charisma</label>
+                        <input class="form-control" id="cha" type="text" name="cha">
+                    </div>
                 </div>
-                <div class="col-sm">
-                    <label for="con">Constitution</label>
-                    <input class="form-control" id="con" type="text" name="con">
-                </div>
-                <div class="col-sm">
-                    <label for="dex">Dexterity</label>
-                    <input class="form-control" id="dex" type="text" name="dex">
-                </div>
-                <div class="col-sm">
-                    <label for="int">Intelligence</label>
-                    <input class="form-control" id="int" type="text" name="int">
-                </div>
-                <div class="col-sm">
-                    <label for="wis">Wisdom</label>
-                    <input class="form-control" id="wis" type="text" name="wis">
-                </div>
-                <div class="col-sm"">
-                    <label for="cha">Charisma</label>
-                    <input class="form-control" id="cha" type="text" name="cha">
-                </div>
-            </div>
-              <div class="form-group row">
-                <div class="col-sm-2">Check if this is your Character</div>
-                <div class="col-sm-10">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="PC" value="PC" name="PC">
-                    <label class="form-check-label" for="PC">
-                      Your Player Character
-                    </label>
+                  <div class="form-group row">
+                    <div class="col-sm-2">Check if this is your Character</div>
+                    <div class="col-sm-10">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="PC" value="PC" name="PC">
+                        <label class="form-check-label" for="PC">
+                          Your Player Character
+                        </label>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            <button value="submit">Create</button>
-        </form>
+                <button value="submit">Create</button>
+            </form>
+        </div>
     </div>
 </main>
 {% endblock body %}

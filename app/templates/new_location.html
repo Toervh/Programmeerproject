@@ -2,12 +2,16 @@
 {% block title %}Create New Location{% endblock %}
 {% block header %}Create New Location{% endblock %}
 {% block body %}
-<div class="text-center">
-    <form id="create_new" method="post">
-        <h2 class="h3 mb-3 font-weight-normal">Create New Location</h2>
-        <input type="text" id="location_name" placeholder="Location Name" autocomplete="off" name="location_name">
-        <input type="text" id="description" placeholder="Description" autocomplete="off" name="description">
-        <button value="submit">Create</button>
-    </form>
-</div>
+<main role="main">
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <form id="create_new" method="post">
+                <h2 class="h3 mb-3 font-weight-normal">Create New Location</h2>
+                <input type="text" id="location_name" placeholder="Location Name" autocomplete="off" name="location_name">
+                <input type="text" id="description" placeholder="Description" autocomplete="off" name="description">
+                <button value="submit">Create</button>
+            </form>
+        </div>
+    </div>
+</main>
 {% endblock body %}

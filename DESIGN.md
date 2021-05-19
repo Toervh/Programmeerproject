@@ -11,44 +11,74 @@ Features:
 * Create Characters
 * Create Notes
 * Create Avatar
-* View recent Notes
+* View All your notes.
 
 ###Homepage
 Users are greeted at a homepage where they can direct to their worlds or their userpage.
-![homepage](/doc/Programmeerproject---Wireframe-cc-Premium-afbeeldingen/0001.jpg)
+<br>
+![homepage](/doc/index%20page.jpg)
+
+Functions:
+The index page contains a list of all worlds the user has created or is connected to. 
+These worlds are displayed and link to their respective world page via the route: /world/<world_id>
+where <world_id> is their ID. 
 
 ###Worldpage
-At the worlds overview page you can view all worlds you've joined or created.
-![worlds](/doc/Programmeerproject---Wireframe-cc-Premium-afbeeldingen/0002.jpg)
+At the world page you can view all worlds you've joined or created.
+<br>
+![worlds](/doc/world%20page.jpg)
+<br>
+A user can view the world name and the description. They can also add more users to this page.
+Below this they see two containers. One container holds all locations in this world and the other holds all characters in this world.
+<br>
+Functions: They can visit these locations or character by clicking their link leading to either /location/<location_id> or /character/<character_id>
+<br>
+In stylized fashion they can also add new locations or characters to this world. These links lead to /new_location/<world_id> or /new_character/<world_id>
+
+###NewWorld
+At the new world page players can create new worlds. The page is quite simple, they enter a name and a description.
+<br>
+![new_worlds](/doc/create%20new%20world%20page.jpg)
+<br>
+Creating the world bring the user back to Index where they can view all worlds.
 
 ###Locations and Characters
-When you click a world you can scroll through all created locations and characters, or you can search for one through the search button.
-![locations/characters](/doc/Programmeerproject---Wireframe-cc-Premium-afbeeldingen/0003.jpg)
+When you view a location or character you are lead to a page where you can view all information about the respective location or character you want to view plus all notes you have placed at this location or character.
+<br>
+Character page:
+<br>
+![locations/characters](/doc/character%20page.jpg)
+<br>
+Location page link.
+The user can find the function for adding notes below the added notes container.
 
-Clicking one of those locations or characters bring you to that objects page. Where you can view a photo (if added) and all information about it.
-Below that you can view all notes added by yourself and other players.
-![location](/doc/Programmeerproject---Wireframe-cc-Premium-afbeeldingen/0004.jpg)
-![character](/doc/Programmeerproject---Wireframe-cc-Premium-afbeeldingen/0005.jpg)
-
-###Create
+###New Location and Character
 When creating a new object users can (for now) choose either location or character and fill in the details. It will be added to that world.
 The object will be added to the database. Creating new characters or locations can only be done by the Creator of the world.
-His players can view the pages, but not edit or create them. They can create new notes for them though. 
-![create](/doc/Programmeerproject---Wireframe-cc-Premium-afbeeldingen/0006.jpg)
+His players can view the pages, but not edit them. They can create new notes for them though. 
+<br>
+![create](/doc/create%20new%20location%20page.jpg)
+<br>
+When creating a Character players have to ability to let the database know that it is their avatar which will mark the character as owned by them.
+
 
 ###Search
 Search results are easy and logical. A user can use the search function to search the three databases: 
-1. Worlds.
+1. Notes.
 2. Locations.
 3. Characters.
+
 The results will contain a link to the object which will bring them to the location/character/world page.
-![query](/doc/Programmeerproject---Wireframe-cc-Premium-afbeeldingen/0007.jpg)
+<br>
+![query](/doc/research%20results%20page.jpg)
 
 ###Userpage
-A users own page includes their notes and name, and a picture. Future update will add their own character to their homepage and all worlds they are connected to and the most recent notes that player created.
-![userpage](/doc/Programmeerproject---Wireframe-cc-Premium-afbeeldingen/0008.jpg)
+A users own page includes their notes and name. Future update will add the ability to add a picture to their homepage and all worlds they are connected to and the most recent notes that player created.
+<br>
+![userpage](/doc/profile%20page.jpg)
 
 ##Database
 An overview of the Database Structure would look something like this:
+<br>
 ![database](/doc/Database%20layout%20Programmeerproject.jpeg)
 Users are connected to worlds. Locations/Characters are linked to worlds.

@@ -9,7 +9,7 @@ Homepage
     <div class="album py-5 bg-light" id="worlds">
         <div class="container" id="world_list">
             <div class="row">
-                <div class="col-md-4" id="location_card">
+                <div class="col-md-4" id="card_col">
                     <div class="card" style="width: 18rem;">
                       <div class="card-body">
                         <h5 class="card-title">New World</h5>
@@ -19,9 +19,9 @@ Homepage
                 </div>
                 {% if worlds %}
                     {% for world in worlds %}
-                        <div class="col-md-4" id="location_card">
+                        <div class="col-md-4" id="card_col">
                             <div class="card" style="width: 18rem;">
-                                <div class="card-body">
+                                <div class="card-body" id="world_card">
                                     <h5 class="card-title">{{ world.name }}</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">By: {{ world.creator.username }}</h6>
                                     <p class="card-text">{{ world.description }}</p>

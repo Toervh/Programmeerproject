@@ -122,7 +122,7 @@ def index():
             if connected_world not in worlds:
                 worlds.append(connected_world)
 
-    print(current_user)
+
     return render_template("index.html", worlds=worlds)
 
 
@@ -253,12 +253,13 @@ def new_character(world_id):
             flash('You are not logged in.')
             return redirect(url_for('login'))
 
+        # Get information from the form.
         pc = request.form.get("PC")
         character_name = request.form.get("character_name")
-        print(f"form get character name: {character_name}")
-        print(f"form get PC: {pc}")
+
         user_id = session["id"]
 
+        # If the PC button was clicked, create a player avatar. Essentially a character but the creator is the owner of this character.
         if request.form.get("PC") == "PC":
             character = Characters(character_name=request.form.get("character_name"), world_id=world_id,
                                    description=request.form.get("description"),
@@ -266,6 +267,7 @@ def new_character(world_id):
                                    dex=request.form.get("dex"),
                                    int=request.form.get("int"), wis=request.form.get("wis"),
                                    cha=request.form.get("cha"), player_character=True, creator_id=user_id)
+        # Create the character but without the Player_character set to True.
         else:
             character = Characters(character_name=request.form.get("character_name"), world_id=world_id, creator_id=user_id, description=request.form.get("description"),
                                    str=request.form.get("str"), con=request.form.get("con"), dex=request.form.get("dex"),
@@ -341,12 +343,6 @@ def character(character_id):
     notes = Notes.query.filter_by(character_id=character_id).all()
     world = World.query.filter_by(id=character.world_id).first()
 
-    print(f"Name: {character.character_name}")
-    print(f"description: {character.description}")
-    print(character.player_character)
-    print(f"player id: {character.player_id}")
-    print(character.creation_date)
-
 
     return render_template("character.html", character=character, notes=notes, owner=owner, world=world)
 
@@ -358,12 +354,9 @@ def create_note():
         flash('You are not logged in.')
         return redirect(url_for('login'))
 
+    # Get the information sent.
     note_text = request.json
-    print(note_text)
-    print(note_text[0])
-    print(note_text[1])
-    print(note_text[2])
-    print(note_text[3])
+
     user_id = session["id"]
 
     if note_text[1] == 'location':
@@ -411,10 +404,8 @@ def search():
         return redirect(url_for('login'))
 
     query = request.args.get('search')
-
-    print(query)
-
     query = "%{}%".format(query)
+
     location_results = Locations.query.filter(Locations.location_name.like(query))
     character_results = Characters.query.filter(Characters.character_name.like(query))
     world_results = World.query.filter(World.name.like(query))

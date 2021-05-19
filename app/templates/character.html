@@ -5,23 +5,21 @@
 <main role="main" class="container">
     <div class="jumbotron text-center" id="character_overview">
         <div class="row mb-2">
-            <div class="header" id="character_name"><h1>{{ character.character_name }}</h1></div>
+            <div class="header"><h1>{{ character.character_name }}</h1></div>
         </div>
         <div class="row md-2">
-            <div class="container-md">
-<!--                TODO CREATE CONNECTION IN DATABASE -->
-                <h5>Created by: {{ character.creator_id.username }}</h5>
+            <div class="container-md" id="creator_name">
+                <h5>Created by: {{ character.creator.username }}</h5>
             </div>
         </div>
 
     </div>
-    <div class="col md-8 blog-main">
-        <div class="row">
-            <div class="container_title" style="text-align: left; padding-left: 3px;"><h4>Description</h4></div>
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <h3 id="description_header">Description</h3>
         </div>
-        <div class="row">
-            <div class="container-md">{{ character.description }}</div>
-        </div>
+        <div class="container-md" id="description-text">{{ character.description }}</div>
+    </div>
         {% if owner %}
         <div class="row mb-2">
             <h3>Player: {{ owner.username }}</h3>
@@ -74,46 +72,44 @@
                 </ul>
             </div>
         {% endif %}
-        <div class="row">
-
-            <div class="col md-8 blog-main" id="notes">
-                <div class="row" style="padding-left: 3px;">
-                    <h3>Notes</h3>
-                </div>
-                <hr>
-                {% if notes %}
-                    {% for note in notes %}
-                        <div class="blog-post" id="note">
-                            <p class="blog-post-meta" id="creation_date">{{ note.creation_date }}</p>
-                            <hr>
-                            <p class="blog-post-text">{{ note.text }}</p>
-                        </div>
-                    {% endfor %}
-                    {% else %}
-                <div class="blog-post">
-                    <p class="blog-post-meta">No Notes added yet. Be the first!</p>
-                </div>
-                {% endif %}
-                <div class="container" id="submitted_notes"></div>
-            </div>
-
-            <div class="col md-8 blog-main">
-                <div class="container" id="new_note">
-
-                    <form id="new_note" onsubmit="createNote(event)">
-                          <div class="form-group">
-                            <label for="note_text">Create Note</label>
-                            <textarea name="note_text" class="form-control" id="note_text" rows="3" placeholder="description"></textarea>
-                              <input type="hidden" id="world_id" value="{{ world.id }}">
-                              <input type="hidden" id="note_type" value="character">
-                              <input type="hidden" id="character_id" value="{{ character.id }}">
-                              <hr>
-                              <button type="submit">Create Note</button>
-                          </div>
-                    </form>
-                </div>
-            </div>
+    <div class="col md-8 blog-main" id="notes">
+        <div class="row" style="padding-left: 3px;">
+            <h3>Notes</h3>
         </div>
+        <hr>
+        {% if notes %}
+            {% for note in notes %}
+                <div class="blog-post" id="note">
+                    <p class="blog-post-meta" id="creation_date">{{ note.creation_date }}</p>
+                    <hr>
+                    <p class="blog-post-text">{{ note.text }}</p>
+                </div>
+            {% endfor %}
+            {% else %}
+        <div class="blog-post">
+            <p class="blog-post-meta">No Notes added yet. Be the first!</p>
+        </div>
+        {% endif %}
+        <div class="container" id="submitted_notes"></div>
+    </div>
+
+    <div class="col md-8 blog-main">
+        <div class="container" id="new_note">
+
+            <form id="new_note" onsubmit="createNote(event)">
+                  <div class="form-group">
+                    <label for="note_text">Create Note</label>
+                    <textarea name="note_text" class="form-control" id="note_text" rows="3" placeholder="description"></textarea>
+                      <input type="hidden" id="world_id" value="{{ world.id }}">
+                      <input type="hidden" id="note_type" value="character">
+                      <input type="hidden" id="character_id" value="{{ character.id }}">
+                      <hr>
+                      <button type="submit">Create Note</button>
+                  </div>
+            </form>
+        </div>
+    </div>
+
 </main>
 <script>
     function createNote(event) {

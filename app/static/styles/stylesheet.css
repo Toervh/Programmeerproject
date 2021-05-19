@@ -71,7 +71,10 @@ button:hover {
   padding: 10px 18px;
   background-color: #f44336;
 }
-
+#search_button {
+  color: black;
+  outline-color: black;
+}
 /* Add padding to containers */
 .container {
   padding: 16px;
@@ -145,7 +148,7 @@ li a:hover {
   text-align: left;
   padding-left: 4px;
 }
-#location_card {
+#card_col {
   text-align: left;
 }
 #notes {
@@ -209,13 +212,47 @@ a.card-link {
   padding-left: 2px;
   width: 70px;
 }
-div {
-  border-style: solid;
-  border-color: red;
-}
 
 .py-3 {
     background-color: gray;
     margin-bottom: 0px;
     margin-top: 0px;
+}
+a {
+  color: darkslategrey;
+}
+#description-text {
+  padding-left: 3px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+}
+
+#creator_name {
+  color: #cccccc;
+}
+
+#world_card {
+  background-image: url('../world-background2.jpg');
+}
+
+#location_card {
+  background-image: url("../location-background.jpg");
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+#character_card {
+  background-image: url("../party3.jpg");
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+#new_card {
+  background-image: url("../52931493-add-button.jpg");
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+.card-title {
+  color: white;
 }
