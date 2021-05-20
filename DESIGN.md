@@ -82,3 +82,19 @@ An overview of the Database Structure would look something like this:
 <br>
 ![database](/doc/Database%20layout%20Programmeerproject.jpeg)
 Users are connected to worlds. Locations/Characters are linked to worlds.
+
+##Routes
+Route "/"
+Route "/login"
+Route "/register"
+Route "/logout"
+Route "/world/<world_id>"
+Route "/location/<world_id>"
+Route "/character/<world_id>"
+Route "/new_world"
+Route "/new_character/<world_id>"
+Route "/new_location/<world_id>"
+Route "/create_note"
+Route "/add_players"
+Route "/search"
+
