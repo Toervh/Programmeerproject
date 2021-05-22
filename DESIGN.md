@@ -16,7 +16,7 @@ Features:
 ###Homepage
 Users are greeted at a homepage where they can direct to their worlds or their userpage.
 <br>
-![homepage](/doc/index%20page.jpg)
+![homepage](doc/index-page.jpg)
 
 Functions:
 The index page contains a list of all worlds the user has created or is connected to. 
@@ -26,7 +26,7 @@ where <world_id> is their ID.
 ###Worldpage
 At the world page you can view all worlds you've joined or created.
 <br>
-![worlds](/doc/world%20page.jpg)
+![worlds](doc/world-page.jpg)
 <br>
 A user can view the world name and the description. They can also add more users to this page.
 Below this they see two containers. One container holds all locations in this world and the other holds all characters in this world.
@@ -38,7 +38,7 @@ In stylized fashion they can also add new locations or characters to this world.
 ###NewWorld
 At the new world page players can create new worlds. The page is quite simple, they enter a name and a description.
 <br>
-![new_worlds](/doc/create%20new%20world%20page.jpg)
+![new_worlds](doc/create-new-0world-page.jpg)
 <br>
 Creating the world bring the user back to Index where they can view all worlds.
 
@@ -47,9 +47,9 @@ When you view a location or character you are lead to a page where you can view 
 <br>
 Character page:
 <br>
-![character_page](/doc/character%20page.jpg)
+![character_page](doc/character-page.jpg)
 <br>
-![locations_page](/doc/location%20page.jpg)  
+![locations_page](doc/location-page.jpg)  
 The user can find the function for adding notes below the added notes container.
 
 ###New Location and Character
@@ -57,7 +57,7 @@ When creating a new object users can (for now) choose either location or charact
 The object will be added to the database. Creating new characters or locations can only be done by the Creator of the world.
 His players can view the pages, but not edit them. They can create new notes for them though. 
 <br>
-![create](/doc/create%20new%20location%20page.jpg)
+![create](doc/create-new-location-page.jpg)
 <br>
 When creating a Character players have to ability to let the database know that it is their avatar which will mark the character as owned by them.
 
@@ -70,17 +70,17 @@ Search results are easy and logical. A user can use the search function to searc
 
 The results will contain a link to the object which will bring them to the location/character/world page.
 <br>
-![query](/doc/research%20results%20page.jpg)
+![query](doc/search-results-page.jpg)
 
 ###Userpage
 A users own page includes their notes and name. Future update will add the ability to add a picture to their homepage and all worlds they are connected to and the most recent notes that player created.
 <br>
-![userpage](/doc/profile%20page.jpg)
+![userpage](doc/profile-page.jpg)
 
 ##Database
 An overview of the Database Structure would look something like this:
 <br>
-![database](/doc/Database%20layout%20Programmeerproject.jpeg)  
+![database](doc/Database-layout-Programmeerproject.jpeg)  
 Users are connected to worlds. Locations/Characters are linked to worlds.
 
 
