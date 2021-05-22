@@ -383,6 +383,9 @@ def character(character_id):
     # Query the character in question.
     character = Characters.query.filter_by(id=character_id).first()
 
+    # Setting owner to none otherwise it breaks the site.
+    owner = None
+
     # Get the id of the owner of this character.
     if character.player_character:
         owner = User.query.filter_by(user_id=character.player_id).first()
