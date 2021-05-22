@@ -157,7 +157,7 @@ li a:hover {
   border-width: 1px;
 }
 #character_overview {
-  background-image: url('../party.jpg');
+  background-image: url('../../../doc/party.jpg');
   background-size: cover;
 }
 a.card-link {
@@ -172,10 +172,10 @@ a.card-link {
   position: relative;
 }
 #world_overview {
-  background-image: url('../NSZcZIii07NgpnYTwuwdmBjhPEwIpo_NcoKE7cRDeM0.jpg');
+  background-image: url('../../../doc/Duchy by FrankAtt.jpg');
 }
 #location_overview {
-  background-image: url('../784590c151c5021f15f1d61c99d47b16.png');
+  background-image: url('../../../doc/784590c151c5021f15f1d61c99d47b16.png');
 }
 #character_name {
   color: #cccccc;
@@ -233,22 +233,22 @@ a {
 }
 
 #world_card {
-  background-image: url('../world-background2.jpg');
+  background-image: url('../../../doc/world-background2.jpg');
 }
 
 #location_card {
-  background-image: url("../location-background.jpg");
+  background-image: url("../../../doc/location-background.jpg");
   background-size: 100%;
   background-repeat: no-repeat;
 }
 
 #character_card {
-  background-image: url("../party3.jpg");
+  background-image: url("../../doc/dejana-storey-daniel-6x-dnd.jpg");
   background-size: 100%;
   background-repeat: no-repeat;
 }
 #new_card {
-  background-image: url("../52931493-add-button.jpg");
+  background-image: url("../../../doc/52931493-add-button.jpg");
   background-size: 100%;
   background-repeat: no-repeat;
 }
