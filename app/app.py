@@ -388,7 +388,7 @@ def character(character_id):
 
     # Get the id of the owner of this character.
     if character.player_character:
-        owner = User.query.filter_by(user_id=character.player_id).first()
+        owner = User.query.filter_by(id=character.player_id).first()
 
     # Query all notes for this character.
     notes = Notes.query.filter_by(character_id=character_id).all()
