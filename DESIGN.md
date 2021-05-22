@@ -78,9 +78,9 @@ A users own page includes their notes and name. Future update will add the abili
 ![userpage](doc/profile-page.jpg)
 
 ##Database
-An overview of the Database Structure would look something like this:
+An overview of the Database Structure looks like this:
 <br>
-![database](doc/Database-layout-Programmeerproject.jpeg)  
+![database](doc/database-layout-programmeerproject.jpg)  
 Users are connected to worlds. Locations/Characters are linked to worlds.
 
 
